@@ -43,7 +43,7 @@ class TextAdventure
     when /^take/
       take_item_from_room(command, response)
     when /^drop/
-      # do something about it
+      drop_item_in_room(command, response)
     when 'inventory'
       response = 'You have: ' + @inventory.join(', ')
     when 'look'
@@ -52,14 +52,6 @@ class TextAdventure
       # Handle combat logic here
     else
       response = 'uh?'
-      # if command.start_with?('take')
-      #   take_item_from_room(command, response)
-      # elsif command == 'inventory'
-      #   response = 'You have: ' + @inventory.join(', ')
-      # elsif command == 'look'
-      #   response = @data['rooms'][@current_state]['description']
-      # elsif command.start_with?('attack')
-      #   # Handle combat logic here
     end
 
     puts response
@@ -69,6 +61,17 @@ class TextAdventure
     item = command.split(' ')[1]
     @inventory << item if response.include?("You take the #{item}.")
     @data['rooms'][@current_state]['items'].delete(item)
+  end
+
+  def drop_item_in_room(command, _response)
+    item = command.split(' ')[1]
+    if @inventory.include?(item)
+      @inventory.delete(item)
+      @data['rooms'][@current_state]['items'] << item
+      puts "You drop the #{item}."
+    else
+      puts "You don't have a #{item} to drop."
+    end
   end
 
   def get_current_description
