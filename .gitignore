@@ -1,0 +1,12 @@
+.DS_STORE
+*.swp
+*.rbc
+/pkg
+*.lock
+/coverage
+.yardoc
+/doc
+.bundle
+vendor
+*.gem
+.rspec

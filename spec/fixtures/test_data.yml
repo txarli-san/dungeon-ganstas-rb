@@ -1,0 +1,27 @@
+global_commands:
+  look: "You look around."
+  inventory: "You check your inventory."
+  help: "Available commands: look, inventory, help, [contextual commands]"
+
+rooms:
+  start:
+    description: "You are in a dark room. There is a door to the north and a small table with a lamp."
+    items: ["lamp"]
+    commands:
+      look: "You see a door to the north and a small table with a lamp."
+      take lamp: "You take the lamp."
+    transitions:
+      go north: "hallway"
+  hallway:
+    description: "You are in a long hallway. There are doors to the north and south. A goblin stands guard here."
+    items: []
+    monsters:
+      goblin:
+        health: 30
+        attack: 5
+    commands:
+      look: "You see doors to the north and south. A goblin is here."
+      attack goblin: "You attack the goblin!"
+    transitions:
+      go south: "start"
+      go north: "library"
