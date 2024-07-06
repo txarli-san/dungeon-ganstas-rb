@@ -39,14 +39,27 @@ class TextAdventure
   end
 
   def execute_command(command, response)
-    if command.start_with?('take')
+    case command
+    when /^take/
       take_item_from_room(command, response)
-    elsif command == 'inventory'
+    when /^drop/
+      # do something about it
+    when 'inventory'
       response = 'You have: ' + @inventory.join(', ')
-    elsif command == 'look'
+    when 'look'
       response = @data['rooms'][@current_state]['description']
-    elsif command.start_with?('attack')
+    when 'attack'
       # Handle combat logic here
+    else
+      response = 'uh?'
+      # if command.start_with?('take')
+      #   take_item_from_room(command, response)
+      # elsif command == 'inventory'
+      #   response = 'You have: ' + @inventory.join(', ')
+      # elsif command == 'look'
+      #   response = @data['rooms'][@current_state]['description']
+      # elsif command.start_with?('attack')
+      #   # Handle combat logic here
     end
 
     puts response

@@ -10,3 +10,4 @@
 vendor
 *.gem
 .rspec
+spec/examples.txt
