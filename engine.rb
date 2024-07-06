@@ -27,15 +27,10 @@ class TextAdventure
     commands = @data['global_commands'].merge(@data['rooms'][@current_state]['commands'] || {})
     command_response = commands[input.downcase]
 
-    if command_response
-      execute_command(input.downcase, command_response)
-      true
-    elsif input.downcase == 'help'
-      puts 'Available commands: ' + available_commands.join(', ')
-      true
-    else
-      false
-    end
+    return false unless command_response
+
+    execute_command(input.downcase, command_response)
+    true
   end
 
   def execute_command(command, response)
@@ -44,10 +39,12 @@ class TextAdventure
       take_item_from_room(command, response)
     when /^drop/
       drop_item_in_room(command, response)
+    when 'help'
+      response = print_help
     when 'inventory'
-      response = 'You have: ' + @inventory.join(', ')
+      response = show_inventory
     when 'look'
-      response = @data['rooms'][@current_state]['description']
+      response = look
     when 'attack'
       # Handle combat logic here
     else
@@ -55,6 +52,18 @@ class TextAdventure
     end
 
     puts response
+  end
+
+  def look
+    @data['rooms'][@current_state]['description']
+  end
+
+  def show_inventory
+    'You have: ' + @inventory.join(', ')
+  end
+
+  def print_help
+    'Available commands: ' + available_commands.join(', ')
   end
 
   def take_item_from_room(command, response)
