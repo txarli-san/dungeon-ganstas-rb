@@ -11,6 +11,7 @@ rooms:
       take lamp: "You take the lamp."
     transitions:
       "go north": "hallway"
+
   hallway:
     description: "You are in a long hallway. There are doors to the north and south. A goblin stands guard here."
     items: []
