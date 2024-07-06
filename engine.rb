@@ -8,19 +8,18 @@ class TextAdventure
   end
 
   def start
-    @current_state = 'start'
     get_current_description
   end
 
   def handle_input(input)
-    return get_current_description if handle_command(input)
+    return if handle_command(input)
 
     next_state = @data['rooms'][@current_state]['transitions'][input.downcase]
     if next_state
       @current_state = next_state
-      get_current_description
+      puts get_current_description
     else
-      "I don't understand that command."
+      puts "I don't understand that command."
     end
   end
 
@@ -41,15 +40,22 @@ class TextAdventure
 
   def execute_command(command, response)
     if command.start_with?('take')
-      item = command.split(' ')[1]
-      @inventory << item if response.include?("You take the #{item}.")
+      take_item_from_room(command, response)
     elsif command == 'inventory'
       response = 'You have: ' + @inventory.join(', ')
+    elsif command == 'look'
+      response = @data['rooms'][@current_state]['description']
     elsif command.start_with?('attack')
       # Handle combat logic here
     end
 
     puts response
+  end
+
+  def take_item_from_room(command, response)
+    item = command.split(' ')[1]
+    @inventory << item if response.include?("You take the #{item}.")
+    @data['rooms'][@current_state]['items'].delete(item)
   end
 
   def get_current_description
@@ -69,16 +75,3 @@ class TextAdventure
     global_commands + room_commands
   end
 end
-
-# Usage:
-# require_relative 'text_adventure'
-# adventure = TextAdventure.new('adventure_data.yml')
-# puts adventure.start
-# loop do
-#   print "> "
-#   input = gets.chomp
-#   break if input.downcase == 'exit'
-#   response = adventure.handle_input(input)
-#   puts response
-# end
-# puts "Thanks for playing!"
