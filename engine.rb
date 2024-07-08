@@ -6,6 +6,7 @@ class TextAdventure
     @current_state = 'start'
     @inventory = []
     @player = @data['player']
+    @items = @data['items'] || {}
   end
 
   def start
@@ -61,7 +62,7 @@ class TextAdventure
     return "There's no #{target} here to attack." unless @data['rooms'][@current_state]['monsters']&.key?(target)
 
     monster = @data['rooms'][@current_state]['monsters'][target]
-    damage_dealt = @player['strength'] - monster['defense'].to_i
+    damage_dealt = @player['strength'] - (monster['defense'] || 0)
     damage_dealt = 1 if damage_dealt < 1
 
     monster['health'] -= damage_dealt
@@ -71,7 +72,7 @@ class TextAdventure
       @data['rooms'][@current_state]['monsters'].delete(target)
       response += " The #{target} is defeated!"
     else
-      monster_damage = monster['attack'] - @player['defense']
+      monster_damage = (monster['attack'] || 0) - @player['defense']
       monster_damage = 1 if monster_damage < 1
       @player['health'] -= monster_damage
       response += " The #{target} counterattacks for #{monster_damage} damage!"
