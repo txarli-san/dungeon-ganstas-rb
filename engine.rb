@@ -5,6 +5,7 @@ class TextAdventure
     @data = YAML.load_file(data_file)
     @current_state = 'start'
     @inventory = []
+    @player = @data['player']
   end
 
   def start
@@ -45,13 +46,76 @@ class TextAdventure
       response = show_inventory
     when 'look'
       response = look
-    when 'attack'
-      # Handle combat logic here
+    when /^attack/
+      response = attack(command.split(' ')[1])
+    when /^use/
+      response = use_item(command.split(' ')[1])
     else
       response = 'uh?'
     end
 
     puts response
+  end
+
+  def attack(target)
+    return "There's no #{target} here to attack." unless @data['rooms'][@current_state]['monsters']&.key?(target)
+
+    monster = @data['rooms'][@current_state]['monsters'][target]
+    damage_dealt = @player['strength'] - monster['defense'].to_i
+    damage_dealt = 1 if damage_dealt < 1
+
+    monster['health'] -= damage_dealt
+    response = "You attack the #{target} for #{damage_dealt} damage!"
+
+    if monster['health'] <= 0
+      @data['rooms'][@current_state]['monsters'].delete(target)
+      response += " The #{target} is defeated!"
+    else
+      monster_damage = monster['attack'] - @player['defense']
+      monster_damage = 1 if monster_damage < 1
+      @player['health'] -= monster_damage
+      response += " The #{target} counterattacks for #{monster_damage} damage!"
+
+      response += ' You have been defeated. Game over!' if @player['health'] <= 0
+    end
+
+    response
+  end
+
+  def use_item(item_name)
+    item = @inventory.find { |i| i == item_name }
+    return "You don't have a #{item_name} in your inventory." unless item
+
+    item_data = @data['items'][item_name]
+    case item_data['type']
+    when 'consumable'
+      use_consumable(item_name, item_data)
+    when 'weapon'
+      equip_weapon(item_name, item_data)
+    when 'armor'
+      equip_armor(item_name, item_data)
+    else
+      "You can't use the #{item_name}."
+    end
+  end
+
+  def use_consumable(item_name, item_data)
+    return unless item_data['effect']['health']
+
+    @player['health'] += item_data['effect']['health']
+    @player['health'] = [@player['health'], @player['max_health']].min
+    @inventory.delete(item_name)
+    "You use the #{item_name} and restore #{item_data['effect']['health']} health."
+  end
+
+  def equip_weapon(item_name, item_data)
+    @player['strength'] = 10 + item_data['damage']
+    "You equip the #{item_name}. Your strength is now #{@player['strength']}."
+  end
+
+  def equip_armor(item_name, item_data)
+    @player['defense'] = 5 + item_data['defense']
+    "You equip the #{item_name}. Your defense is now #{@player['defense']}."
   end
 
   def look

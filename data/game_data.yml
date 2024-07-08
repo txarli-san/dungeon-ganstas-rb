@@ -1,3 +1,9 @@
+player:
+  health: 100
+  max_health: 100
+  strength: 10
+  defense: 5
+
 global_commands:
   look: "You look around."
   inventory: "You check your inventory."

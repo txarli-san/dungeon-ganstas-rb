@@ -7,6 +7,12 @@ RSpec.describe TextAdventure do
 
   before do
     allow(YAML).to receive(:load_file).and_return({
+                                                    'player' => {
+                                                      'health' => 100,
+                                                      'max_health' => 100,
+                                                      'strength' => 10,
+                                                      'defense' => 5
+                                                    },
                                                     'rooms' => {
                                                       'start' => {
                                                         'description' => 'You are in a dark room. There is a door to the north and a small table with a lamp.',
@@ -25,7 +31,8 @@ RSpec.describe TextAdventure do
                                                         'monsters' => {
                                                           'goblin' => {
                                                             'health' => 30,
-                                                            'attack' => 5
+                                                            'attack' => 5,
+                                                            'defense' => 2
                                                           }
                                                         },
                                                         'commands' => {
@@ -80,6 +87,28 @@ RSpec.describe TextAdventure do
     it 'lists all available commands in the current room' do
       game.start
       expect(game.available_commands).to include('look', 'take lamp', 'inventory', 'help')
+    end
+  end
+
+  describe '#attack' do
+    before do
+      game.instance_variable_set(:@current_state, 'hallway')
+    end
+
+    it 'attacks a monster and updates its health' do
+      expect(game.attack('goblin')).to include('You attack the goblin for 8 damage!')
+      monster = game.instance_variable_get(:@data)['rooms']['hallway']['monsters']['goblin']
+      expect(monster['health']).to eq(22)
+    end
+
+    it 'removes the monster when its health reaches 0' do
+      4.times { game.attack('goblin') }
+      monsters = game.instance_variable_get(:@data)['rooms']['hallway']['monsters']
+      expect(monsters).not_to have_key('goblin')
+    end
+
+    it 'returns an error message when the target does not exist' do
+      expect(game.attack('dragon')).to eq("There's no dragon here to attack.")
     end
   end
 end
