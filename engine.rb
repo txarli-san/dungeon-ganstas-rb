@@ -29,6 +29,11 @@ class TextAdventure
     commands = @data['global_commands'].merge(@data['rooms'][@current_state]['commands'] || {})
     command_response = commands[input.downcase]
 
+    if input.start_with?('take ') || input.start_with?('drop ')
+      execute_command(input.downcase, nil)
+      return true
+    end
+
     return false unless command_response
 
     execute_command(input.downcase, command_response)
@@ -38,9 +43,9 @@ class TextAdventure
   def execute_command(command, response)
     case command
     when /^take/
-      take_item_from_room(command, response)
+      response = take_item_from_room(command, response)
     when /^drop/
-      drop_item_in_room(command, response)
+      response = drop_item_in_room(command, response)
     when 'help'
       response = print_help
     when 'inventory'
@@ -52,7 +57,7 @@ class TextAdventure
     when /^use/
       response = use_item(command.split(' ')[1])
     else
-      response = 'uh?'
+      response ||= "I don't understand that command."
     end
 
     puts response
@@ -131,20 +136,26 @@ class TextAdventure
     'Available commands: ' + available_commands.join(', ')
   end
 
-  def take_item_from_room(command, response)
+  def take_item_from_room(command, _response)
     item = command.split(' ')[1]
-    @inventory << item if response.include?("You take the #{item}.")
-    @data['rooms'][@current_state]['items'].delete(item)
+    if @data['rooms'][@current_state]['items']&.include?(item)
+      @inventory << item
+      @data['rooms'][@current_state]['items'].delete(item)
+      "You take the #{item}."
+    else
+      "There's no #{item} here to take."
+    end
   end
 
   def drop_item_in_room(command, _response)
     item = command.split(' ')[1]
     if @inventory.include?(item)
       @inventory.delete(item)
+      @data['rooms'][@current_state]['items'] ||= []
       @data['rooms'][@current_state]['items'] << item
-      puts "You drop the #{item}."
+      "You drop the #{item}."
     else
-      puts "You don't have a #{item} to drop."
+      "You don't have a #{item} to drop."
     end
   end
 
