@@ -1,4 +1,5 @@
 require 'yaml'
+require_relative 'lib/console_output'
 
 class TextAdventure
   def initialize(data_file)
@@ -19,9 +20,9 @@ class TextAdventure
     next_state = @data['rooms'][@current_state]['transitions'][input.downcase]
     if next_state
       @current_state = next_state
-      puts get_current_description
+      ConsoleOutput.print get_current_description
     else
-      puts "I don't understand that command."
+      ConsoleOutput.print "I don't understand that command."
     end
   end
 
@@ -60,7 +61,7 @@ class TextAdventure
       response ||= "I don't understand that command."
     end
 
-    puts response
+    ConsoleOutput.print response
   end
 
   def attack(target)
