@@ -1,21 +1,30 @@
 class Character
-  ABILITIES = %i[strength dexterity constitution intelligence wisdom charisma]
+  attr_reader :name, :hp, :inventory
 
-  attr_reader :abilities
-
-  def initialize
-    @abilities = generate_abilities
+  def initialize(name, hp)
+    @name = name
+    @hp = hp
+    @inventory = []
   end
 
-  private
-
-  def generate_abilities
-    ABILITIES.each_with_object({}) do |ability, hash|
-      hash[ability] = roll_ability
-    end
+  def add_item(item)
+    @inventory << item
   end
 
-  def roll_ability
-    3.times.map { rand(1..6) }.sum
+  def remove_item(item)
+    @inventory.delete(item)
+  end
+
+  def attack(target)
+    weapon = @inventory.find { |item| item.type == 'weapon' }
+    damage = weapon ? weapon.damage : 1
+    target.take_damage(damage)
+  end
+
+  def take_damage(amount)
+    armor = @inventory.find { |item| item.type == 'armor' }
+    damage_reduction = armor ? armor.defense : 0
+    @hp -= [amount - damage_reduction, 0].max
+    @hp = [@hp, 0].max
   end
 end
