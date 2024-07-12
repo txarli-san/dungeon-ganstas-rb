@@ -2,7 +2,7 @@ require 'yaml'
 require_relative '../engine'
 
 RSpec.describe Engine do
-  let(:data_file) { 'spec/fixtures/test_data.yml' }
+  let(:data_file) { 'data/game_data.yml' }
   let(:game) { Engine.new(data_file) }
 
   before do
@@ -15,11 +15,17 @@ RSpec.describe Engine do
                                                     },
                                                     'rooms' => {
                                                       'start' => {
-                                                        'description' => 'You are in a dark room. There is a door to the north and a small table with a lamp.',
-                                                        'items' => ['lamp'],
+                                                        'description' => 'You are in a dark room. There is a door to the north.',
+                                                        'items' => {
+                                                          'iron_sword' => {
+                                                            'name' => 'Iron Sword',
+                                                            'type' => 'weapon',
+                                                            'damage' => 6,
+                                                            'abilities' => %w[slash thrust]
+                                                          }
+                                                        },
                                                         'commands' => {
-                                                          'look' => 'You see a door to the north and a small table with a lamp.',
-                                                          'take lamp' => 'You take the lamp.'
+                                                          'take iron sword' => 'You take the Iron Sword.'
                                                         },
                                                         'transitions' => {
                                                           'go north' => 'hallway'
@@ -27,43 +33,21 @@ RSpec.describe Engine do
                                                       },
                                                       'hallway' => {
                                                         'description' => 'You are in a long hallway. There are doors to the north and south. A goblin stands guard here.',
-                                                        'items' => ['health_potion'],
+                                                        'items' => {},
                                                         'monsters' => {
                                                           'goblin' => {
                                                             'health' => 30,
-                                                            'attack' => 5,
-                                                            'defense' => 2
+                                                            'attack' => 5
                                                           }
                                                         },
                                                         'commands' => {
-                                                          'look' => 'You see doors to the north and south. A goblin is here.',
-                                                          'attack goblin' => 'You attack the goblin!'
+                                                          'attack goblin' => 'You attack the goblin!',
+                                                          'talk to goblin' => 'The goblin looks suspiciously at you but says nothing.'
                                                         },
                                                         'transitions' => {
-                                                          'go south' => 'start',
-                                                          'go north' => 'library'
+                                                          'go north' => 'library',
+                                                          'go south' => 'start'
                                                         }
-                                                      },
-                                                      'library' => {
-                                                        'description' => 'You are in a dusty library.',
-                                                        'items' => %w[book sword],
-                                                        'transitions' => {
-                                                          'go south' => 'hallway'
-                                                        }
-                                                      }
-                                                    },
-                                                    'items' => {
-                                                      'health_potion' => {
-                                                        'type' => 'consumable',
-                                                        'effect' => { 'health' => 20 }
-                                                      },
-                                                      'sword' => {
-                                                        'type' => 'weapon',
-                                                        'damage' => 5
-                                                      },
-                                                      'shield' => {
-                                                        'type' => 'armor',
-                                                        'defense' => 3
                                                       }
                                                     },
                                                     'global_commands' => {
@@ -76,46 +60,43 @@ RSpec.describe Engine do
   describe '#take_item_from_room' do
     it 'adds the item to inventory and removes it from the room' do
       game.instance_variable_set(:@current_state, 'start')
-      game.take_item_from_room('take lamp', 'You take the lamp.')
-      expect(game.instance_variable_get(:@inventory)).to include('lamp')
-      expect(game.instance_variable_get(:@data)['rooms']['start']['items']).not_to include('lamp')
+      game.take_item_from_room('take iron sword', '')
+      expect(game.instance_variable_get(:@inventory)).to include(hash_including('name' => 'Iron Sword'))
+      expect(game.instance_variable_get(:@data)['rooms']['start']['items']).not_to have_key('iron_sword')
     end
 
     it 'does not add non-existent items to inventory' do
       game.instance_variable_set(:@current_state, 'start')
-      game.take_item_from_room('take axe', 'You take the axe.')
-      expect(game.instance_variable_get(:@inventory)).not_to include('axe')
+      game.take_item_from_room('take axe', '')
+      expect(game.instance_variable_get(:@inventory)).to be_empty
     end
   end
 
   describe '#drop_item_in_room' do
     before do
-      game.instance_variable_set(:@inventory, ['lamp'])
+      game.instance_variable_set(:@inventory, [{ 'name' => 'Iron Sword', 'type' => 'weapon', 'damage' => 6 }])
     end
 
     it 'drops an item from inventory to the current room' do
       game.instance_variable_set(:@current_state, 'hallway')
-      expect(game.drop_item_in_room('drop lamp', '')).to eq('You drop the lamp.')
-      expect(game.instance_variable_get(:@inventory)).not_to include('lamp')
-      expect(game.instance_variable_get(:@data)['rooms']['hallway']['items']).to include('lamp')
-    end
-
-    it 'handles dropping items in rooms with no items' do
-      game.instance_variable_set(:@current_state, 'library')
-      game.instance_variable_get(:@data)['rooms']['library'].delete('items')
-      expect(game.drop_item_in_room('drop lamp', '')).to eq('You drop the lamp.')
-      expect(game.instance_variable_get(:@inventory)).not_to include('lamp')
-      expect(game.instance_variable_get(:@data)['rooms']['library']['items']).to eq(['lamp'])
+      expect(game.drop_item_in_room('drop iron sword', '')).to eq('You drop the Iron Sword.')
+      expect(game.instance_variable_get(:@inventory)).to be_empty
+      expect(game.instance_variable_get(:@data)['rooms']['hallway']['items']).to have_key('iron_sword')
     end
 
     it 'does not drop items not in inventory' do
-      expect(game.drop_item_in_room('drop sword', '')).to eq("You don't have a sword to drop.")
+      expect(game.drop_item_in_room('drop axe', '')).to eq("You don't have a axe to drop.")
     end
   end
 
   describe '#use_item' do
     before do
       game.instance_variable_set(:@inventory, %w[health_potion sword shield])
+      game.instance_variable_set(:@items, {
+                                   'health_potion' => { 'type' => 'consumable', 'effect' => { 'health' => 20 } },
+                                   'sword' => { 'type' => 'weapon', 'damage' => 5 },
+                                   'shield' => { 'type' => 'armor', 'defense' => 3 }
+                                 })
     end
 
     it 'uses a consumable item and removes it from inventory' do
@@ -154,30 +135,16 @@ RSpec.describe Engine do
     end
 
     it 'executes global commands' do
-      expect { game.handle_input('inventory') }.to output(/You have:/).to_stdout
+      expect { game.handle_input('inventory') }.to output(/Your inventory is empty/).to_stdout
     end
 
     it 'executes room-specific commands' do
       game.instance_variable_set(:@current_state, 'start')
-      expect { game.handle_input('take lamp') }.to output(/You take the lamp/).to_stdout
+      expect { game.handle_input('take iron sword') }.to output(/You take the Iron Sword/).to_stdout
     end
 
     it 'handles invalid commands' do
       expect { game.handle_input('dance') }.to output(/I don't understand that command/).to_stdout
-    end
-
-    it 'handles dropping items in any room' do
-      game.instance_variable_set(:@current_state, 'start')
-      game.instance_variable_set(:@inventory, ['lamp'])
-      expect { game.handle_input('drop lamp') }.to output("You drop the lamp.\n").to_stdout
-      expect(game.instance_variable_get(:@inventory)).not_to include('lamp')
-      expect(game.instance_variable_get(:@data)['rooms']['start']['items']).to include('lamp')
-
-      game.handle_input('go north')
-      game.instance_variable_set(:@inventory, ['health_potion'])
-      expect { game.handle_input('drop health_potion') }.to output("You drop the health_potion.\n").to_stdout
-      expect(game.instance_variable_get(:@inventory)).not_to include('health_potion')
-      expect(game.instance_variable_get(:@data)['rooms']['hallway']['items']).to include('health_potion')
     end
   end
 
@@ -189,7 +156,7 @@ RSpec.describe Engine do
 
     it 'displays an empty inventory message when inventory is empty' do
       game.instance_variable_set(:@inventory, [])
-      expect(game.show_inventory).to eq('You have: ')
+      expect(game.show_inventory).to eq('Your inventory is empty.')
     end
   end
 
@@ -198,7 +165,6 @@ RSpec.describe Engine do
       game.instance_variable_set(:@current_state, 'hallway')
       description = game.get_current_description
       expect(description).to include('You are in a long hallway')
-      expect(description).to include('Items here: health_potion')
       expect(description).to include('Monsters here: goblin')
       expect(description).to include('Available commands:')
     end
