@@ -1,27 +1,47 @@
 require 'spec_helper'
-require_relative '../core/engine'
+require_relative '../core/game_state'
 
-RSpec.describe Engine do
-  let(:data_file) { 'spec/fixtures/test_data.yml' }
-  let(:engine) { Engine.new(data_file) }
+RSpec.describe GameState do
+  let(:test_data) do
+    {
+      'player' => { 'health' => 100, 'max_health' => 100, 'strength' => 10, 'defense' => 5 },
+      'rooms' => {
+        'start' => {
+          'description' => 'Test room',
+          'items' => { 'sword' => { 'name' => 'Sword', 'type' => 'weapon' } }
+        }
+      }
+    }
+  end
 
-  describe '#start' do
-    it 'returns the initial room description' do
-      expect(engine.start).to include('You are in a dark room')
+  let(:game_state) { GameState.new(test_data) }
+
+  describe '#initialize' do
+    it 'sets up the initial game state correctly' do
+      expect(game_state.player).to eq(test_data['player'])
+      expect(game_state.inventory).to be_empty
+      expect(game_state.current_room).to eq('start')
     end
   end
 
-  describe '#handle_input' do
-    it 'handles movement commands' do
-      expect(engine.handle_input('go north')).to include('You are in a long hallway')
+  describe '#add_to_inventory' do
+    it 'adds an item to the inventory' do
+      game_state.add_to_inventory('Sword')
+      expect(game_state.inventory).to include('Sword')
     end
+  end
 
-    it 'handles taking items' do
-      expect(engine.handle_input('take iron sword')).to include('You take the Iron Sword')
+  describe '#remove_from_inventory' do
+    it 'removes an item from the inventory' do
+      game_state.add_to_inventory('Sword')
+      game_state.remove_from_inventory('Sword')
+      expect(game_state.inventory).not_to include('Sword')
     end
+  end
 
-    it 'handles invalid commands' do
-      expect(engine.handle_input('dance')).to include("I don't understand that command")
+  describe '#get_room_data' do
+    it 'returns the correct room data' do
+      expect(game_state.get_room_data('start')).to eq(test_data['rooms']['start'])
     end
   end
 end
