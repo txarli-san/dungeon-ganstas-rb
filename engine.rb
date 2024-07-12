@@ -46,7 +46,7 @@ class Engine
     commands = @data['global_commands'].merge(@data['rooms'][@current_state]['commands'] || {})
     command_response = commands[input.downcase]
 
-    if input.start_with?('take ') || input.start_with?('drop ') || input.start_with?('attack ')
+    if input.start_with?('take ') || input.start_with?('drop ') || input.start_with?('attack ') || input.start_with?('stats')
       execute_command(input.downcase, nil)
       return true
     end
@@ -69,6 +69,8 @@ class Engine
       response = show_inventory
     when 'look'
       response = look
+    when 'stats'
+      show_stats
     when /^attack/
       response = attack(command.split(' ')[1])
     when /^talk/
@@ -245,8 +247,8 @@ class Engine
     items.map { |k, v| v.is_a?(Hash) ? v['name'] : k }.join(', ')
   end
 
-  def stats
-    "Your stats:\nHP: #{@player['health']}/#{@player['max_health']}\nStrength: #{@player['strength']}\nDefense: #{@player['defense']}"
+  def show_stats
+    ConsoleOutput.print "Your stats:\nHP: #{@player['health']}/#{@player['max_health']}\nStrength: #{@player['strength']}\nDefense: #{@player['defense']}"
   end
 
   def available_commands
