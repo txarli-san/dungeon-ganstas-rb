@@ -9,6 +9,16 @@ class Engine
     @inventory = []
     @player = @data['player']
     @items = @data['items'] || {}
+
+    populate_items_from_rooms
+  end
+
+  def populate_items_from_rooms
+    @data['rooms'].each do |_, room|
+      room['items'].each do |item_key, item_data|
+        @items[item_key] = item_data unless @items.key?(item_key)
+      end
+    end
   end
 
   def start
@@ -118,10 +128,14 @@ class Engine
   end
 
   def use_item(item_name)
-    item = @inventory.find { |i| i == item_name }
+    item = @inventory.find do |i|
+      i.is_a?(Hash) ? i['name'].downcase == item_name.downcase : i.downcase == item_name.downcase
+    end
     return "You don't have a #{item_name} in your inventory." unless item
 
-    item_data = @data['items'][item_name]
+    item_data = item.is_a?(Hash) ? item : @items[item]
+    return "You can't use the #{item_name}." unless item_data
+
     case item_data['type']
     when 'consumable'
       use_consumable(item_name, item_data)
@@ -182,14 +196,16 @@ class Engine
   def take_item_from_room(command, _response)
     item_name = command.split(' ', 2)[1]
     room_items = @data['rooms'][@current_state]['items']
+
     return "There's no #{item_name} here to take." if room_items.nil? || room_items.empty?
 
-    item_key = room_items.keys.find { |k| k.downcase == item_name.downcase }
+    item_key = room_items.keys.find { |k| k.gsub('_', ' ').downcase == item_name.downcase }
+
     if item_key
       item = room_items[item_key]
       @inventory << (item.is_a?(Hash) ? item : item_key)
       room_items.delete(item_key)
-      "You take the #{item.is_a?(Hash) ? item['name'] : item_key}."
+      "You take the #{item.is_a?(Hash) ? item['name'] : item_key.gsub('_', ' ')}."
     else
       "There's no #{item_name} here to take."
     end

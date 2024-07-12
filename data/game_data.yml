@@ -11,7 +11,7 @@ global_commands:
 
 rooms:
   start:
-    description: "You are in a dark room. There is a door to the north and a small table with a lamp."
+    description: "You are in a dark room. There is a door to the north."
     items:
       iron_sword:
         name: "Iron Sword"
@@ -19,7 +19,7 @@ rooms:
         damage: 6
         abilities: ["slash", "thrust"]
     commands:
-      take lamp: "You take the lamp."
+      take sword: "You take the sword."
     transitions:
       "go north": "hallway"
 
