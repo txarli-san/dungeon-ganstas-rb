@@ -1,6 +1,6 @@
 require 'byebug'
 require_relative 'engine'
-adventure = TextAdventure.new('./data/game_data.yml')
+adventure = Engine.new('./data/game_data.yml')
 
 puts adventure.start
 

@@ -1,9 +1,10 @@
 require 'yaml'
 require_relative 'lib/console_output'
+require_relative 'lib/world'
 
-class TextAdventure
+class Engine
   def initialize(data_file)
-    @data = YAML.load_file(data_file)
+    @data = World.generate(YAML.load_file(data_file))
     @current_state = 'start'
     @inventory = []
     @player = @data['player']
@@ -27,10 +28,15 @@ class TextAdventure
   end
 
   def handle_command(input)
+    if input.downcase == 'inventory'
+      ConsoleOutput.print show_inventory
+      return true
+    end
+
     commands = @data['global_commands'].merge(@data['rooms'][@current_state]['commands'] || {})
     command_response = commands[input.downcase]
 
-    if input.start_with?('take ') || input.start_with?('drop ')
+    if input.start_with?('take ') || input.start_with?('drop ') || input.start_with?('attack ')
       execute_command(input.downcase, nil)
       return true
     end
@@ -55,6 +61,8 @@ class TextAdventure
       response = look
     when /^attack/
       response = attack(command.split(' ')[1])
+    when /^talk/
+      response = talk(command.split(' ')[1])
     when /^use/
       response = use_item(command.split(' ')[1])
     else
@@ -64,10 +72,22 @@ class TextAdventure
     ConsoleOutput.print response
   end
 
-  def attack(target)
-    return "There's no #{target} here to attack." unless @data['rooms'][@current_state]['monsters']&.key?(target)
+  def attack(target = nil)
+    monsters = @data['rooms'][@current_state]['monsters']
+    return 'There are no monsters here to attack.' unless monsters&.any?
 
-    monster = @data['rooms'][@current_state]['monsters'][target]
+    if target.nil?
+      unless monsters.keys.length == 1
+        return "Which monster do you want to attack? Options: #{monsters.keys.join(', ')}"
+      end
+
+      target = monsters.keys.first
+
+    end
+
+    return "There's no #{target} here to attack." unless monsters.key?(target)
+
+    monster = monsters[target]
     damage_dealt = @player['strength'] - (monster['defense'] || 0)
     damage_dealt = 1 if damage_dealt < 1
 
@@ -75,7 +95,7 @@ class TextAdventure
     response = "You attack the #{target} for #{damage_dealt} damage!"
 
     if monster['health'] <= 0
-      @data['rooms'][@current_state]['monsters'].delete(target)
+      monsters.delete(target)
       response += " The #{target} is defeated!"
     else
       monster_damage = (monster['attack'] || 0) - @player['defense']
@@ -87,6 +107,14 @@ class TextAdventure
     end
 
     response
+  end
+
+  def talk(target)
+    monsters = @data['rooms'][@current_state]['monsters']
+    return "There's no one here to talk to." unless monsters&.key?(target)
+
+    dialogue = @data['rooms'][@current_state]['commands']["talk to #{target}"]
+    dialogue || "The #{target} doesn't respond."
   end
 
   def use_item(item_name)
@@ -126,11 +154,25 @@ class TextAdventure
   end
 
   def look
-    @data['rooms'][@current_state]['description']
+    state = @data['rooms'][@current_state]
+    description = state['description']
+    description += "\nItems here: " + list_items(state['items']) if state['items']&.any?
+    description += "\nMonsters here: " + state['monsters'].keys.join(', ') if state['monsters']&.any?
+    description
+  end
+
+  def list_items(items)
+    return 'None' if items.nil? || items.empty?
+
+    items.values.compact.map { |item| item['name'] }.join(', ')
   end
 
   def show_inventory
-    'You have: ' + @inventory.join(', ')
+    if @inventory.empty?
+      'Your inventory is empty.'
+    else
+      'You have: ' + @inventory.map { |item| item.is_a?(Hash) ? item['name'] : item }.join(', ')
+    end
   end
 
   def print_help
@@ -138,32 +180,42 @@ class TextAdventure
   end
 
   def take_item_from_room(command, _response)
-    item = command.split(' ')[1]
-    if @data['rooms'][@current_state]['items']&.include?(item)
-      @inventory << item
-      @data['rooms'][@current_state]['items'].delete(item)
-      "You take the #{item}."
+    item_name = command.split(' ', 2)[1]
+    room_items = @data['rooms'][@current_state]['items']
+    return "There's no #{item_name} here to take." if room_items.nil? || room_items.empty?
+
+    item_key = room_items.keys.find { |k| k.downcase == item_name.downcase }
+    if item_key
+      item = room_items[item_key]
+      @inventory << (item.is_a?(Hash) ? item : item_key)
+      room_items.delete(item_key)
+      "You take the #{item.is_a?(Hash) ? item['name'] : item_key}."
     else
-      "There's no #{item} here to take."
+      "There's no #{item_name} here to take."
     end
   end
 
   def drop_item_in_room(command, _response)
-    item = command.split(' ')[1]
-    if @inventory.include?(item)
+    item_name = command.split(' ', 2)[1]
+    item = @inventory.find do |i|
+      i.is_a?(Hash) ? i['name'].downcase == item_name.downcase : i.downcase == item_name.downcase
+    end
+    if item
       @inventory.delete(item)
-      @data['rooms'][@current_state]['items'] ||= []
-      @data['rooms'][@current_state]['items'] << item
-      "You drop the #{item}."
+      @data['rooms'][@current_state]['items'] ||= {}
+      item_key = item.is_a?(Hash) ? item['name'].downcase.gsub(' ', '_') : item.downcase.gsub(' ', '_')
+      @data['rooms'][@current_state]['items'][item_key] = item
+      "You drop the #{item.is_a?(Hash) ? item['name'] : item}."
     else
-      "You don't have a #{item} to drop."
+      "You don't have a #{item_name} to drop."
     end
   end
 
   def get_current_description
     state = @data['rooms'][@current_state]
     description = state['description']
-    description += "\nItems here: " + state['items'].join(', ') if state['items'] && state['items'].any?
+    items_description = list_items(state['items'])
+    description += "\nItems here: #{items_description}" if items_description != 'None'
     if state['monsters'] && state['monsters'].any?
       description += "\nMonsters here: " + state['monsters'].keys.join(', ')
     end
@@ -171,9 +223,20 @@ class TextAdventure
     description
   end
 
+  def list_items(items)
+    return 'None' if items.nil? || items.empty?
+
+    items.map { |k, v| v.is_a?(Hash) ? v['name'] : k }.join(', ')
+  end
+
+  def stats
+    "Your stats:\nHP: #{@player['health']}/#{@player['max_health']}\nStrength: #{@player['strength']}\nDefense: #{@player['defense']}"
+  end
+
   def available_commands
     global_commands = @data['global_commands'].keys
     room_commands = @data['rooms'][@current_state]['commands']&.keys || []
-    global_commands + room_commands
+    custom_commands = %w[take drop attack talk use stats]
+    (global_commands + room_commands + custom_commands).uniq
   end
 end

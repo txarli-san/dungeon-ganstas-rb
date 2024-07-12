@@ -1,9 +1,9 @@
 require 'yaml'
 require_relative '../engine'
 
-RSpec.describe TextAdventure do
+RSpec.describe Engine do
   let(:data_file) { 'spec/fixtures/test_data.yml' }
-  let(:game) { TextAdventure.new(data_file) }
+  let(:game) { Engine.new(data_file) }
 
   before do
     allow(YAML).to receive(:load_file).and_return({

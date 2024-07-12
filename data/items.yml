@@ -1,0 +1,196 @@
+# Weapons
+iron_sword:
+  name: "Iron Sword"
+  type: weapon
+  damage: 6
+  abilities: ["slash", "thrust"]
+
+battle_axe:
+  name: "Battle Axe"
+  type: weapon
+  damage: 8
+  abilities: ["cleave", "crush"]
+
+longbow:
+  name: "Longbow"
+  type: weapon
+  damage: 7
+  abilities: ["rapid_shot", "piercing_arrow"]
+
+dagger:
+  name: "Assassin's Dagger"
+  type: weapon
+  damage: 4
+  abilities: ["backstab", "poison_blade"]
+
+warhammer:
+  name: "Dwarven Warhammer"
+  type: weapon
+  damage: 9
+  abilities: ["slam", "stun"]
+
+spear:
+  name: "Elven Spear"
+  type: weapon
+  damage: 6
+  abilities: ["long_reach", "throw"]
+
+# Armor
+chainmail:
+  name: "Chainmail Armor"
+  type: armor
+  defense: 5
+  abilities: ["flexibility"]
+
+plate_armor:
+  name: "Plate Armor"
+  type: armor
+  defense: 8
+  abilities: ["damage_reduction"]
+
+leather_armor:
+  name: "Leather Armor"
+  type: armor
+  defense: 3
+  abilities: ["stealth_bonus"]
+
+mage_robe:
+  name: "Enchanted Mage Robe"
+  type: armor
+  defense: 2
+  abilities: ["magic_resistance", "mana_regeneration"]
+
+tower_shield:
+  name: "Tower Shield"
+  type: armor
+  defense: 6
+  abilities: ["block", "shield_bash"]
+
+# Magic Items
+fireball_staff:
+  name: "Staff of Fireballs"
+  type: magic
+  damage: 10
+  abilities: ["fireball", "flame_burst"]
+
+frost_wand:
+  name: "Wand of Frost"
+  type: magic
+  damage: 7
+  abilities: ["ice_bolt", "freeze"]
+
+healing_rod:
+  name: "Rod of Healing"
+  type: magic
+  healing: 15
+  abilities: ["heal", "regeneration"]
+
+necromancer_staff:
+  name: "Necromancer's Staff"
+  type: magic
+  damage: 6
+  abilities: ["raise_dead", "life_drain"]
+
+nature_scepter:
+  name: "Scepter of Nature"
+  type: magic
+  damage: 5
+  abilities: ["entangle", "poison_cloud"]
+
+# Consumables
+health_potion:
+  name: "Health Potion"
+  type: consumable
+  effect:
+    health: 50
+
+mana_potion:
+  name: "Mana Potion"
+  type: consumable
+  effect:
+    mana: 50
+
+strength_elixir:
+  name: "Elixir of Strength"
+  type: consumable
+  effect:
+    strength: 5
+  duration: 300
+
+invisibility_potion:
+  name: "Potion of Invisibility"
+  type: consumable
+  effect:
+    invisibility: true
+  duration: 60
+
+antidote:
+  name: "Antidote"
+  type: consumable
+  effect:
+    cure_poison: true
+
+# Artifacts
+amulet_of_protection:
+  name: "Amulet of Protection"
+  type: artifact
+  effect:
+    defense: 3
+    magic_resistance: 2
+  abilities: ["ward_evil"]
+
+ring_of_power:
+  name: "Ring of Power"
+  type: artifact
+  effect:
+    strength: 2
+    damage: 2
+  abilities: ["energy_burst"]
+
+crown_of_wisdom:
+  name: "Crown of Wisdom"
+  type: artifact
+  effect:
+    intelligence: 5
+    mana: 100
+  abilities: ["mind_control"]
+
+boots_of_speed:
+  name: "Boots of Speed"
+  type: artifact
+  effect:
+    movement_speed: 2
+  abilities: ["dash"]
+
+cloak_of_shadows:
+  name: "Cloak of Shadows"
+  type: artifact
+  effect:
+    stealth: 5
+  abilities: ["shadow_step"]
+
+# Tools
+lockpick:
+  name: "Master Lockpick"
+  type: tool
+  abilities: ["unlock", "disarm_trap"]
+
+grappling_hook:
+  name: "Grappling Hook"
+  type: tool
+  abilities: ["climb", "pull"]
+
+spyglass:
+  name: "Enchanted Spyglass"
+  type: tool
+  abilities: ["far_sight", "detect_magic"]
+
+bag_of_holding:
+  name: "Bag of Holding"
+  type: tool
+  abilities: ["extra_inventory", "item_retrieve"]
+
+alchemist_kit:
+  name: "Alchemist's Kit"
+  type: tool
+  abilities: ["brew_potion", "identify_substance"]
