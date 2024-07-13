@@ -11,7 +11,8 @@ RSpec.describe CombatSystem do
     allow(game_state).to receive(:player).and_return(player)
     allow(player).to receive(:calculate_damage).and_return(10)
     allow(player).to receive(:calculate_defense).and_return(5)
-    allow(player).to receive(:stats).and_return({ health: 100 })
+    allow(player).to receive(:stats).and_return({ 'health' => 100 })
+    allow(player).to receive(:take_damage)
     allow(game_state).to receive(:get_room_data).and_return({
                                                               'monsters' => { 'goblin' => { 'health' => 20,
                                                                                             'attack' => 3, 'defense' => 1 } }

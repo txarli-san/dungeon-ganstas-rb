@@ -43,7 +43,8 @@ RSpec.describe ItemManager do
     context 'when using a consumable' do
       it 'applies the item effect' do
         allow(inventory).to receive(:items).and_return([Item.new(items['health_potion'])])
-        allow(player).to receive(:stats).and_return({ health: 80, max_health: 100 })
+        allow(player).to receive(:stats).and_return({ 'health' => 80, 'max_health' => 100 })
+        allow(player).to receive(:inventory).and_return(inventory)
         allow(inventory).to receive(:remove)
 
         expect(item_manager.use_item('Health Potion', game_state)).to include('restore 20 health')
