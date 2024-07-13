@@ -58,17 +58,23 @@ You can customize the game by editing the `game_data.yml` file in the `data` dir
 
 - `core/`: Directory containing core game logic
   - `engine.rb`: The main game engine
-  - `game_state.rb`: Manages the current state of the game
+  - `game_state.rb`: Manages the current game state
+  - `console_output.rb`: Handles console output
   - `command_handler.rb`: Handles user input and commands
   - `room_manager.rb`: Manages room navigation and descriptions
   - `item_manager.rb`: Handles item-related actions
   - `combat_system.rb`: Manages combat interactions
   - `output_formatter.rb`: Formats output for display
   - `world.rb`: Generates the game world
+  - `item.rb`: Defines the Item class
+  - `inventory.rb`: Manages player inventory
+  - `equipment.rb`: Handles player equipment
+  - `player.rb`: Defines the Player class
 - `data/`: Directory containing game data
   - `game_data.yml`: YAML file containing game data
   - `items.yml`: YAML file containing item data
-- `spec/`: Directory containing test files
+  - `special_items.yml`: YAML file containing special (futureish) data
+- `spec/`: Directory test suite
 - `game.rb`: The main game loop
 
 ## Running Tests
