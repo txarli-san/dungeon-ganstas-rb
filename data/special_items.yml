@@ -1,0 +1,64 @@
+# Artifacts
+amulet_of_protection:
+  name: "Amulet of Protection"
+  type: artifact
+  effect:
+    defense: 3
+    magic_resistance: 2
+  abilities: ["ward_evil"]
+
+ring_of_power:
+  name: "Ring of Power"
+  type: artifact
+  effect:
+    strength: 2
+    damage: 2
+  abilities: ["energy_burst"]
+
+crown_of_wisdom:
+  name: "Crown of Wisdom"
+  type: artifact
+  effect:
+    intelligence: 5
+    mana: 100
+  abilities: ["mind_control"]
+
+boots_of_speed:
+  name: "Boots of Speed"
+  type: artifact
+  effect:
+    movement_speed: 2
+  abilities: ["dash"]
+
+cloak_of_shadows:
+  name: "Cloak of Shadows"
+  type: artifact
+  effect:
+    stealth: 5
+  abilities: ["shadow_step"]
+
+# Tools
+lockpick:
+  name: "Master Lockpick"
+  type: tool
+  abilities: ["unlock", "disarm_trap"]
+
+grappling_hook:
+  name: "Grappling Hook"
+  type: tool
+  abilities: ["climb", "pull"]
+
+spyglass:
+  name: "Enchanted Spyglass"
+  type: tool
+  abilities: ["far_sight", "detect_magic"]
+
+bag_of_holding:
+  name: "Bag of Holding"
+  type: tool
+  abilities: ["extra_inventory", "item_retrieve"]
+
+alchemist_kit:
+  name: "Alchemist's Kit"
+  type: tool
+  abilities: ["brew_potion", "identify_substance"]
