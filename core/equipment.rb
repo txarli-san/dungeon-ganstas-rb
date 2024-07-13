@@ -1,7 +1,7 @@
 class Equipment
   attr_reader :slots
 
-  SLOT_TYPES = %i[weapon head chest]
+  SLOT_TYPES = %i[weapon head chest offhand]
 
   def initialize
     @slots = Hash.new(nil)
