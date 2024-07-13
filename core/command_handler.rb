@@ -24,6 +24,8 @@ class CommandHandler
       show_inventory
     when 'look'
       look
+    when 'stats'
+      @game_state.player.display_stats
     else
       "I don't understand that command."
     end
