@@ -1,3 +1,4 @@
+require 'byebug'
 class CombatSystem
   def initialize(game_state)
     @game_state = game_state
@@ -18,9 +19,10 @@ class CombatSystem
     return "There's no #{target} here to attack." unless monsters.key?(target)
 
     monster = monsters[target]
-    damage_dealt = @game_state.player['strength'] - (monster['defense'] || 0)
-    damage_dealt = 1 if damage_dealt < 1
+    player = @game_state.player
 
+    # byebug
+    damage_dealt = [player.calculate_damage - (monster['defense'] || 0), 1].max
     monster['health'] -= damage_dealt
     response = "You attack the #{target} for #{damage_dealt} damage!"
 
@@ -28,12 +30,11 @@ class CombatSystem
       monsters.delete(target)
       response += " The #{target} is defeated!"
     else
-      monster_damage = (monster['attack'] || 0) - @game_state.player['defense']
-      monster_damage = 1 if monster_damage < 1
-      @game_state.player['health'] -= monster_damage
+      monster_damage = [(monster['attack'] || 0) - player.calculate_defense, 1].max
+      player.take_damage(monster_damage)
       response += " The #{target} counterattacks for #{monster_damage} damage!"
 
-      response += ' You have been defeated. Game over!' if @game_state.player['health'] <= 0
+      response += ' You have been defeated. Game over!' if player.stats['health'] <= 0
     end
 
     response
