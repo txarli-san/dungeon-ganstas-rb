@@ -1,4 +1,3 @@
-require 'byebug'
 require_relative 'inventory'
 require_relative 'equipment'
 
@@ -43,7 +42,6 @@ class Player
   private
 
   def update_stats
-    byebug
     @stats['strength'] = @stats['strength'] + @equipment.total_strength
     @stats['defense'] = @stats['defense'] + @equipment.total_defense
   end

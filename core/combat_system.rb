@@ -1,4 +1,3 @@
-require 'byebug'
 class CombatSystem
   def initialize(game_state)
     @game_state = game_state
@@ -21,7 +20,6 @@ class CombatSystem
     monster = monsters[target]
     player = @game_state.player
 
-    # byebug
     damage_dealt = [player.calculate_damage - (monster['defense'] || 0), 1].max
     monster['health'] -= damage_dealt
     response = "You attack the #{target} for #{damage_dealt} damage!"
