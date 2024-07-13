@@ -5,12 +5,13 @@ This project is a flexible text adventure game engine written in Ruby. It allows
 ## Features
 
 - Dynamic room navigation
-- Item management (picking up and dropping items)
+- Item management (picking up, dropping, and using items)
 - Combat system with monsters
 - Character stats (health, strength, defense)
 - Customizable game data using YAML files
 - Extensible command system
 - Inventory management
+- Randomized item placement and monster loot
 - Simple natural language processing for game commands
 
 ## Getting Started
@@ -55,12 +56,20 @@ You can customize the game by editing the `game_data.yml` file in the `data` dir
 
 ## Project Structure
 
-- `engine.rb`: The main game engine
-- `character.rb`: Character class for managing player stats
-- `console_output.rb`: Utility for console output
-- `game.rb`: The main game loop
-- `data/game_data.yml`: YAML file containing game data
+- `core/`: Directory containing core game logic
+  - `engine.rb`: The main game engine
+  - `game_state.rb`: Manages the current state of the game
+  - `command_handler.rb`: Handles user input and commands
+  - `room_manager.rb`: Manages room navigation and descriptions
+  - `item_manager.rb`: Handles item-related actions
+  - `combat_system.rb`: Manages combat interactions
+  - `output_formatter.rb`: Formats output for display
+  - `world.rb`: Generates the game world
+- `data/`: Directory containing game data
+  - `game_data.yml`: YAML file containing game data
+  - `items.yml`: YAML file containing item data
 - `spec/`: Directory containing test files
+- `game.rb`: The main game loop
 
 ## Running Tests
 
