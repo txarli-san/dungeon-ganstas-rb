@@ -1,8 +1,8 @@
 player:
-  health: 100
-  max_health: 100
-  strength: 10
-  defense: 5
+  health: 12
+  max_health: 12
+  strength: 2
+  defense: 1
 
 global_commands:
   look: "You look around."
@@ -16,10 +16,10 @@ rooms:
       iron_sword:
         name: "Iron Sword"
         type: weapon
+        slot: weapon
         damage: 6
-        abilities: ["slash", "thrust"]
     commands:
-      take sword: "You take the sword."
+      take iron sword: "You take the sword."
     transitions:
       "go north": "hallway"
 
