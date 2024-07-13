@@ -11,8 +11,8 @@ rooms:
       iron_sword:
         name: "Iron Sword"
         type: weapon
+        slot: weapon
         damage: 6
-        abilities: ["slash", "thrust"]
     commands:
       take sword: "You take the sword."
     transitions:
