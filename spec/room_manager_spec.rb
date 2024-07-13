@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../core/room_manager'
+require_relative '../managers/room_manager'
 
 RSpec.describe RoomManager do
   let(:rooms) do

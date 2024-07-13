@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../core/output_formatter'
+require_relative '../utils/output_formatter'
 
 RSpec.describe OutputFormatter do
   let(:formatter) { OutputFormatter.new }

@@ -56,26 +56,33 @@ You can customize the game by editing the `game_data.yml` file in the `data` dir
 
 ## Project Structure
 
-- `core/`: Directory containing core game logic
+- `core/`: Core game logic
+  - `combat_system.rb`: Manages combat interactions
+  - `command_handler.rb`: Handles user input and commands
+  - `console_output.rb`: Handles console output
   - `engine.rb`: The main game engine
   - `game_state.rb`: Manages the current game state
-  - `console_output.rb`: Handles console output
-  - `command_handler.rb`: Handles user input and commands
-  - `room_manager.rb`: Manages room navigation and descriptions
-  - `item_manager.rb`: Handles item-related actions
-  - `combat_system.rb`: Manages combat interactions
-  - `output_formatter.rb`: Formats output for display
   - `world.rb`: Generates the game world
-  - `item.rb`: Defines the Item class
-  - `inventory.rb`: Manages player inventory
+- `data/`: Game data files
+  - `game_data.yml`: Main game data
+  - `items.yml`: Item data
+  - `special_items.yml`: Special item data
+- `managers/`: Management classes
+  - `item_manager.rb`: Manages item-related actions
+  - `room_manager.rb`: Manages room navigation and descriptions
+- `models/`: Game object models
   - `equipment.rb`: Handles player equipment
+  - `inventory.rb`: Manages player inventory
+  - `item.rb`: Defines the Item class
   - `player.rb`: Defines the Player class
-- `data/`: Directory containing game data
-  - `game_data.yml`: YAML file containing game data
-  - `items.yml`: YAML file containing item data
-  - `special_items.yml`: YAML file containing special (futureish) data
-- `spec/`: Directory test suite
-- `game.rb`: The main game loop
+- `spec/`: Test files
+  - `fixtures/`: Test data files
+  - Various `*_spec.rb` files for each component
+  - `spec_helper.rb`: RSpec configuration
+- `utils/`: Utility classes
+  - `output_formatter.rb`: Formats output for display
+- `game.rb`: Main game loop
+- `Gemfile` and `Gemfile.lock`: Ruby dependencies
 
 ## Running Tests
 

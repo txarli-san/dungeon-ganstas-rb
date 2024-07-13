@@ -4,11 +4,11 @@ require 'yaml'
 
 require_relative 'game_state'
 require_relative 'command_handler'
-require_relative 'room_manager'
-require_relative 'item_manager'
 require_relative 'combat_system'
-require_relative 'output_formatter'
 require_relative 'world'
+require_relative '../managers/room_manager'
+require_relative '../managers/item_manager'
+require_relative '../utils/output_formatter'
 
 class Engine
   attr_reader :game_state, :command_handler, :room_manager, :item_manager, :combat_system, :output_formatter

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../core/item_manager'
+require_relative '../managers/item_manager'
 
 RSpec.describe ItemManager do
   let(:items) do

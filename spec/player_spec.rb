@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../core/player'
+require_relative '../models/player'
 
 RSpec.describe Player do
   let(:initial_stats) { { 'health' => 12, 'max_health' => 12, 'strength' => 2, 'defense' => 1 } }

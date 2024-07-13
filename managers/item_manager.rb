@@ -1,4 +1,4 @@
-require_relative 'item'
+require_relative '../models/item'
 
 class ItemManager
   def initialize(items)
