@@ -25,10 +25,9 @@ rooms:
 
   hallway:
     description: "You are in a long hallway. There are doors to the north and south. A goblin stands guard here."
-    items: []
     monsters:
       goblin:
-        health: 30
+        health: 9
         attack: 5
     commands:
       attack goblin: "You attack the goblin!"
@@ -40,7 +39,12 @@ rooms:
 
   library:
     description: "You are in a dusty old library filled with ancient books. A ghostly figure is floating near the shelves."
-    items: ["ancient book"]
+    items:
+      ancient book:
+        name: "Ancient book"
+        type: magic
+        damage: 2
+        slot: consumable
     monsters:
       ghost:
         health: 20
@@ -48,7 +52,7 @@ rooms:
     commands:
       look: "You see shelves filled with old books and a ghostly figure."
       take book: "You take the ancient book."
-      read book: "The book contains spells and ancient secrets."
+      read book: "The book contains spells and ancient secrets, you feel empowered."
       talk to ghost: "The ghost whispers, 'Beware the dragon in the treasure room.'"
     transitions:
       "go south": "hallway"
@@ -56,7 +60,11 @@ rooms:
 
   hidden_passage:
     description: "You found a hidden passage behind a bookshelf. It leads to an unknown location."
-    items: []
+    health_potion:
+      name: "Health Potion"
+      type: consumable
+      effect:
+        health: 5
     commands:
       look: "You are in a narrow passage. It's dark and eerie."
     transitions:
@@ -65,11 +73,26 @@ rooms:
 
   armory:
     description: "You are in an armory filled with various weapons and armor. A skeleton warrior is here."
-    items: ["sword", "shield"]
+    items:
+      battle_axe:
+        name: "Battle Axe"
+        type: weapon
+        damage: 8
+        slot: weapon
+      leather_armor:
+        name: "Leather Armor"
+        type: armor
+        defense: 2
+        slot: chest
+      shield:
+        name: "Shield"
+        type: armor
+        defense: 3
+        slot: offhand
     monsters:
       skeleton_warrior:
-        health: 40
-        attack: 15
+        health: 14
+        attack: 9
     commands:
       look: "You see weapons and armor everywhere. A skeleton warrior is here."
       take sword: "You take a sharp sword."
@@ -80,7 +103,12 @@ rooms:
 
   treasure_room:
     description: "You found the treasure room! Congratulations! A dragon is sleeping here."
-    items: ["treasure"]
+    items:
+      fireball_staff:
+        name: "Staff of Fireballs"
+        type: magic
+        damage: 12
+        slot: weapon
     monsters:
       dragon:
         health: 100
