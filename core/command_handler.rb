@@ -19,7 +19,7 @@ class CommandHandler
     when 'use'
       @item_manager.use_item(args.join(' '), @game_state)
     when 'attack'
-      @combat_system.attack(args.first)
+      @combat_system.attack(args.first, @game_state.current_room)
     when 'inventory'
       show_inventory
     when 'look'

@@ -2,7 +2,7 @@ require 'spec_helper'
 require_relative '../core/command_handler'
 
 RSpec.describe CommandHandler do
-  let(:game_state) { instance_double('GameState') }
+  let(:game_state) { instance_double('GameState', current_room: 'current_room') }
   let(:room_manager) { instance_double('RoomManager') }
   let(:item_manager) { instance_double('ItemManager') }
   let(:combat_system) { instance_double('CombatSystem') }
@@ -11,10 +11,9 @@ RSpec.describe CommandHandler do
   describe '#handle' do
     context 'when given a movement command' do
       it 'calls handle_movement' do
-        allow(game_state).to receive(:current_room).and_return('start')
-        allow(room_manager).to receive(:get_next_room).with('start', 'north').and_return('new_room')
+        allow(room_manager).to receive(:get_next_room).and_return('new_room')
         allow(game_state).to receive(:change_room)
-        allow(room_manager).to receive(:get_current_description).with('new_room').and_return('New room description')
+        allow(room_manager).to receive(:get_current_description).and_return('New room description')
 
         expect(command_handler.handle('go north')).to eq('New room description')
       end
@@ -29,7 +28,7 @@ RSpec.describe CommandHandler do
 
     context 'when given an attack command' do
       it 'calls the combat_system' do
-        allow(combat_system).to receive(:attack).and_return('You attack the monster')
+        allow(combat_system).to receive(:attack).with('goblin', 'current_room').and_return('You attack the monster')
         expect(command_handler.handle('attack goblin')).to eq('You attack the monster')
       end
     end
