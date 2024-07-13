@@ -1,3 +1,4 @@
+require 'byebug'
 require_relative 'inventory'
 require_relative 'equipment'
 
@@ -6,8 +7,24 @@ class Player
 
   def initialize(initial_stats)
     @stats = initial_stats
+    @base_strength = initial_stats['strength']
     @inventory = Inventory.new
     @equipment = Equipment.new
+  end
+
+  def display_stats
+    equipped_weapon = @equipment.weapon
+    weapon_damage = equipped_weapon ? equipped_weapon.damage : 0
+
+    stats = {
+      "Health": "#{@stats['health']}/#{@stats['max_health']}",
+      "Strength": @stats['strength'],
+      "Defense": calculate_defense,
+      "Weapon": equipped_weapon ? "#{equipped_weapon.name} (Damage: #{weapon_damage})" : 'None',
+      "Total Damage": calculate_damage
+    }
+
+    stats.map { |key, value| "#{key}: #{value}" }.join("\n")
   end
 
   def equip(item)
@@ -27,7 +44,7 @@ class Player
   end
 
   def calculate_damage
-    @stats['strength'].to_i + (@equipment.weapon ? @equipment.weapon.damage : 0)
+    @base_strength + (@equipment.weapon ? @equipment.weapon.damage : 0)
   end
 
   def calculate_defense
@@ -42,7 +59,6 @@ class Player
   private
 
   def update_stats
-    @stats['strength'] = @stats['strength'] + @equipment.total_strength
-    @stats['defense'] = @stats['defense'] + @equipment.total_defense
+    @stats['strength'] = @base_strength + @equipment.total_strength
   end
 end

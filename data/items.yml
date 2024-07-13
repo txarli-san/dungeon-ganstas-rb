@@ -39,13 +39,13 @@ spear:
 chainmail:
   name: "Chainmail Armor"
   type: armor
-  defense: 5
+  defense: 4
   slot: chest
 
 plate_armor:
   name: "Plate Armor"
   type: armor
-  defense: 8
+  defense: 5
   slot: chest
 
 leather_armor:
@@ -63,7 +63,7 @@ mage_robe:
 tower_shield:
   name: "Tower Shield"
   type: armor
-  defense: 6
+  defense: 3
   slot: offhand
 
 # Magic Items
@@ -76,7 +76,7 @@ fireball_staff:
 frost_wand:
   name: "Wand of Frost"
   type: magic
-  damage: 7
+  damage: 10
   slot: weapon
 
 # Consumables
@@ -84,13 +84,13 @@ health_potion:
   name: "Health Potion"
   type: consumable
   effect:
-    health: 50
+    health: 5
 
 mana_potion:
   name: "Mana Potion"
   type: consumable
   effect:
-    mana: 50
+    mana: 5
 
 strength_elixir:
   name: "Elixir of Strength"

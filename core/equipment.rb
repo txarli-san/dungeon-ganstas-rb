@@ -22,14 +22,14 @@ class Equipment
   end
 
   def weapon
-    @slots['weapon']
+    @slots[:weapon]
   end
 
   def total_defense
-    %i[head chest].sum { |slot| @slots[slot]&.defense || 0 }
+    %i[head chest offhand].sum { |slot| @slots[slot]&.defense || 0 }
   end
 
   def total_strength
-    @slots.values.compact.sum(&:damage)
+    weapon ? weapon.damage : 0
   end
 end
