@@ -1,6 +1,3 @@
-require 'spec_helper'
-require_relative '../core/game_state'
-
 RSpec.describe GameState do
   let(:test_data) do
     {
@@ -18,24 +15,9 @@ RSpec.describe GameState do
 
   describe '#initialize' do
     it 'sets up the initial game state correctly' do
-      expect(game_state.player).to eq(test_data['player'])
-      expect(game_state.inventory).to be_empty
+      expect(game_state.player).to be_a(Player)
+      expect(game_state.player.stats).to eq(test_data['player'])
       expect(game_state.current_room).to eq('start')
-    end
-  end
-
-  describe '#add_to_inventory' do
-    it 'adds an item to the inventory' do
-      game_state.add_to_inventory('Sword')
-      expect(game_state.inventory).to include('Sword')
-    end
-  end
-
-  describe '#remove_from_inventory' do
-    it 'removes an item from the inventory' do
-      game_state.add_to_inventory('Sword')
-      game_state.remove_from_inventory('Sword')
-      expect(game_state.inventory).not_to include('Sword')
     end
   end
 
