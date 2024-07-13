@@ -1,11 +1,11 @@
 # Weapons
-iron_sword:
+iron sword:
   name: "Iron Sword"
   type: weapon
   damage: 6
   slot: weapon
 
-battle_axe:
+battle axe:
   name: "Battle Axe"
   type: weapon
   damage: 8
@@ -42,63 +42,63 @@ chainmail:
   defense: 4
   slot: chest
 
-plate_armor:
+plate armor:
   name: "Plate Armor"
   type: armor
   defense: 5
   slot: chest
 
-leather_armor:
+leather armor:
   name: "Leather Armor"
   type: armor
   defense: 3
   slot: chest
 
-mage_robe:
+mage robe:
   name: "Enchanted Mage Robe"
   type: armor
   defense: 2
   slot: chest
 
-tower_shield:
+tower shield:
   name: "Tower Shield"
   type: armor
   defense: 3
   slot: offhand
 
 # Magic Items
-fireball_staff:
+staff:
   name: "Staff of Fireballs"
   type: magic
   damage: 12
   slot: weapon
 
-frost_wand:
+wand:
   name: "Wand of Frost"
   type: magic
   damage: 10
   slot: weapon
 
 # Consumables
-health_potion:
+health potion:
   name: "Health Potion"
   type: consumable
   effect:
     health: 5
 
-mana_potion:
+mana potion:
   name: "Mana Potion"
   type: consumable
   effect:
     mana: 5
 
-strength_elixir:
+strength elixir:
   name: "Elixir of Strength"
   type: consumable
   effect:
     strength: 5
 
-invisibility_potion:
+invisibility potion:
   name: "Potion of Invisibility"
   type: consumable
   effect:
