@@ -19,6 +19,18 @@ RSpec.describe CommandHandler do
       end
     end
 
+    context 'when given the inventory command' do
+      it 'shows the inventory' do
+        allow(game_state).to receive(:inventory).and_return(double(items: [Item.new({ 'name' => 'Sword' })]))
+        expect(command_handler.handle('inventory')).to eq('You have: Sword')
+      end
+
+      it 'shows empty inventory message when inventory is empty' do
+        allow(game_state).to receive(:inventory).and_return(double(items: []))
+        expect(command_handler.handle('inventory')).to eq('Your inventory is empty.')
+      end
+    end
+
     context 'when given an item-related command' do
       it 'calls the appropriate item_manager method' do
         allow(item_manager).to receive(:take_item).and_return('You take the item')

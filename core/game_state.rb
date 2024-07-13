@@ -16,4 +16,8 @@ class GameState
   def get_room_data(room_name)
     @data['rooms'][room_name]
   end
+
+  def inventory
+    @player.inventory
+  end
 end

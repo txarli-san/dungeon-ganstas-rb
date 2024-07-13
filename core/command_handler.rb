@@ -42,8 +42,8 @@ class CommandHandler
   end
 
   def show_inventory
-    items = @game_state.inventory
-    items.empty? ? 'Your inventory is empty.' : "You have: #{items.join(', ')}"
+    items = @game_state.inventory.items
+    items.empty? ? 'Your inventory is empty.' : "You have: #{items.map(&:name).join(', ')}"
   end
 
   def look

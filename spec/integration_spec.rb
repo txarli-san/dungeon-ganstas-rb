@@ -26,4 +26,17 @@ RSpec.describe 'Game Integration' do
     expect(attack_response).to include('You attack the goblin')
     expect(attack_response).to include('The goblin counterattacks')
   end
+
+  it 'allows player to take items and check inventory' do
+    engine.start
+
+    take_sword_response = engine.handle_input('take iron sword')
+    expect(take_sword_response).to include('You take the Iron Sword')
+
+    take_potion_response = engine.handle_input('take health potion')
+    expect(take_potion_response).to include('You take the Health Potion')
+
+    inventory_response = engine.handle_input('inventory')
+    expect(inventory_response).to include('You have: Iron Sword, Health Potion')
+  end
 end
