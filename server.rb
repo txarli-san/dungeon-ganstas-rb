@@ -1,7 +1,7 @@
 require 'socket'
 require_relative 'core/engine'
 
-server = TCPServer.new 2323
+server = TCPServer.new 10_000
 
 def handle_client(client)
   loop do
