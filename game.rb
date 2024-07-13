@@ -1,5 +1,5 @@
-require 'byebug'
-require_relative 'engine'
+require_relative 'core/engine'
+
 adventure = Engine.new('./data/game_data.yml')
 
 puts adventure.start

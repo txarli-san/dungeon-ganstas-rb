@@ -4,87 +4,27 @@ player:
   strength: 10
   defense: 5
 
-global_commands:
-  look: "You look around."
-  inventory: "You check your inventory."
-  help: "Available commands: look, inventory, help, [contextual commands]"
-
 rooms:
   start:
-    description: "You are in a dark room. There is a door to the north and a small table with a lamp."
-    items: ["lamp"]
+    description: "You are in a dark room. There is a door to the north."
+    items:
+      iron_sword:
+        name: "Iron Sword"
+        type: weapon
+        damage: 6
+        abilities: ["slash", "thrust"]
     commands:
-      take lamp: "You take the lamp."
+      take sword: "You take the sword."
     transitions:
       "go north": "hallway"
 
   hallway:
-    description: "You are in a long hallway. There are doors to the north and south. A goblin stands guard here."
+    description: "You are in a long hallway. There are doors to the north and south."
     items: []
-    monsters:
-      goblin:
-        health: 30
-        attack: 5
-    commands:
-      attack goblin: "You attack the goblin!"
-      talk to goblin: "The goblin looks suspiciously at you but says nothing."
     transitions:
-      "go north": "library"
       "go south": "start"
-      "go east": "armory"
 
-  library:
-    description: "You are in a dusty old library filled with ancient books. A ghostly figure is floating near the shelves."
-    items: ["ancient book"]
-    monsters:
-      ghost:
-        health: 20
-        attack: 10
-    commands:
-      look: "You see shelves filled with old books and a ghostly figure."
-      take book: "You take the ancient book."
-      read book: "The book contains spells and ancient secrets."
-      talk to ghost: "The ghost whispers, 'Beware the dragon in the treasure room.'"
-    transitions:
-      "go south": "hallway"
-      "go west": "hidden_passage"
-
-  hidden_passage:
-    description: "You found a hidden passage behind a bookshelf. It leads to an unknown location."
-    items: []
-    commands:
-      look: "You are in a narrow passage. It's dark and eerie."
-    transitions:
-      "go north": "treasure_room"
-      "go south": "library"
-
-  armory:
-    description: "You are in an armory filled with various weapons and armor. A skeleton warrior is here."
-    items: ["sword", "shield"]
-    monsters:
-      skeleton_warrior:
-        health: 40
-        attack: 15
-    commands:
-      look: "You see weapons and armor everywhere. A skeleton warrior is here."
-      take sword: "You take a sharp sword."
-      take shield: "You take a sturdy shield."
-      attack skeleton: "You attack the skeleton warrior!"
-    transitions:
-      "go west": "hallway"
-
-  treasure_room:
-    description: "You found the treasure room! Congratulations! A dragon is sleeping here."
-    items: ["treasure"]
-    monsters:
-      dragon:
-        health: 100
-        attack: 20
-    commands:
-      look: "You see a huge pile of treasure and a sleeping dragon."
-      take treasure: "You take some treasure, but the dragon awakens!"
-      attack dragon: "You attack the dragon, risking everything!"
-      sneak: "You try to sneak past the dragon without waking it."
-    transitions:
-      "go south": "hidden_passage"
-      "go west": "hallway"
+global_commands:
+  look: "You look around."
+  inventory: "You check your inventory."
+  help: "Available commands: look, inventory, help, [contextual commands]"
