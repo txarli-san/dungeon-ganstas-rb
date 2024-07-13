@@ -4,19 +4,22 @@ require_relative 'core/engine'
 server = TCPServer.new 2323
 
 def handle_client(client)
-  adventure = Engine.new('./data/game_data.yml')
-  client.puts adventure.start
-
   loop do
-    client.print '> '
-    input = client.gets.chomp
-    break if input.downcase == 'quit'
-
-    response = adventure.handle_input(input)
-    client.puts response
+    input = client.gets
+    if input.nil?
+      puts 'Client disconnected'
+      break
+    end
+    input.chomp!
+    # Process the input here
+    puts "Received: #{input}"
+  rescue Errno::ECONNRESET
+    puts 'Connection reset by peer'
+    break
+  rescue StandardError => e
+    puts "Error: #{e.message}"
+    break
   end
-
-  client.puts 'Thanks for playing!'
   client.close
 end
 
