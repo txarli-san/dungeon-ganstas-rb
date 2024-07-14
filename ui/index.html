@@ -21,10 +21,11 @@
                 overflow: hidden;
             }
             #terminal {
-                height: 100%;
+                height: calc(100% - 20px);
                 width: 100%;
                 position: relative;
                 margin: 20px;
+                padding-bottom: 20px; /* Safe area at the bottom */
             }
             #terminal::before {
                 content: " ";
@@ -129,10 +130,31 @@
                     opacity: 0.24387;
                 }
             }
+            #kernel-panic {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #000;
+                color: #cc0000;
+                font-family: monospace;
+                font-size: 16px;
+                padding: 20px;
+                box-sizing: border-box;
+                overflow: auto;
+                z-index: 1000;
+            }
         </style>
     </head>
     <body>
         <div id="terminal"></div>
+        <div id="kernel-panic">
+            *** KERNEL PANIC *** Your device is too advanced for our game.
+            Please find a proper terminal to play Dungeon Gangstas. System
+            halted.
+        </div>
         <script>
             const term = new Terminal({
                 cursorBlink: true,
@@ -230,6 +252,19 @@
             socket.onerror = (error) => {
                 term.writeln(`WebSocket Error: ${error}`);
             };
+
+            function isMobileOrTablet() {
+                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                    navigator.userAgent,
+                );
+            }
+
+            if (isMobileOrTablet()) {
+                document.getElementById("kernel-panic").style.display = "block";
+                document.getElementById("terminal").style.display = "none";
+            } else {
+                connectWebSocket();
+            }
         </script>
     </body>
 </html>
