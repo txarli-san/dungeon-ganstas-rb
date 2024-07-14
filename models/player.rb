@@ -23,7 +23,7 @@ class Player
       "Total Damage": calculate_damage
     }
 
-    stats.map { |key, value| "#{key}: #{value}" }.join("\n")
+    stats.map { |key, value| "#{key.to_s.ljust(15)}: #{value}" }.join("\n")
   end
 
   def equip(item)

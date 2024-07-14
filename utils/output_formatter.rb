@@ -1,9 +1,9 @@
 class OutputFormatter
   def format_description(description)
-    "\n#{description}\n"
+    description.gsub("\n", "\r\n")
   end
 
   def format_result(result)
-    "\n#{result}\n"
+    result.gsub("\n", "\r\n")
   end
 end
