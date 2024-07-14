@@ -7,7 +7,7 @@ class Item
     @slot = data['slot']&.to_sym
     @damage = data['damage'] || 0
     @defense = data['defense'] || 0
-    @strength_bonus = data['attack_bonus'] || 0
+    @attack_bonus = data['attack_bonus'] || 0
     @effect = data['effect'] || {}
   end
 
