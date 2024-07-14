@@ -136,7 +136,7 @@
         <script>
             const term = new Terminal({
                 cursorBlink: true,
-                fontSize: 24,
+                fontSize: 16,
                 fontFamily: '"VT323", monospace',
                 theme: {
                     background: "#1a0b00",
@@ -145,6 +145,7 @@
                 },
                 cursorStyle: "block",
                 padding: 10,
+                lineHeight: 1,
             });
             const fitAddon = new FitAddon.FitAddon();
             term.loadAddon(fitAddon);
@@ -153,6 +154,30 @@
 
             const socket = new WebSocket("ws://localhost:8080");
             let inputBuffer = "";
+
+            const banner = `
+   ██████╗ ██╗   ██╗███╗   ██╗ ██████╗ ███████╗ ██████╗ ███╗   ██╗
+   ██╔══██╗██║   ██║████╗  ██║██╔════╝ ██╔════╝██╔═══██╗████╗  ██║
+   ██║  ██║██║   ██║██╔██╗ ██║██║  ███╗█████╗  ██║   ██║██╔██╗ ██║
+   ██║  ██║██║   ██║██║╚██╗██║██║   ██║██╔══╝  ██║   ██║██║╚██╗██║
+   ██████╔╝╚██████╔╝██║ ╚████║╚██████╔╝███████╗╚██████╔╝██║ ╚████║
+   ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝
+ ██████╗  █████╗ ███╗   ██╗ ██████╗ ███████╗████████╗ █████╗ ███████╗
+██╔════╝ ██╔══██╗████╗  ██║██╔════╝ ██╔════╝╚══██╔══╝██╔══██╗██╔════╝
+██║  ███╗███████║██╔██╗ ██║██║  ███╗███████╗   ██║   ███████║███████╗
+██║   ██║██╔══██║██║╚██╗██║██║   ██║╚════██║   ██║   ██╔══██║╚════██║
+╚██████╔╝██║  ██║██║ ╚████║╚██████╔╝███████║   ██║   ██║  ██║███████║
+ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝
+        `;
+
+            function writeBanner() {
+                const currentFontSize = term.options.fontSize;
+                term.options.fontSize = 8;
+                term.refresh(0, term.rows - 1);
+                banner.split("\n").forEach((line) => term.writeln(line));
+                term.options.fontSize = currentFontSize;
+                term.refresh(0, term.rows - 1);
+            }
 
             socket.onmessage = (event) => {
                 const lines = event.data.split("\r\n");
@@ -166,7 +191,7 @@
 
                 if (domEvent.keyCode === 13) {
                     // Enter key
-                    term.writeln("");
+                    term.write("\r\n");
                     socket.send(inputBuffer);
                     inputBuffer = "";
                 } else if (domEvent.keyCode === 8) {
@@ -186,10 +211,12 @@
             });
 
             socket.onopen = () => {
+                writeBanner();
+                term.writeln("");
                 term.writeln(
-                    "Connected to the game server. Welcome to Dungeon Degenerates\n",
+                    "Connected to the game server. Welcome to Dungeon Gangstas!",
                 );
-                i;
+                term.writeln("");
                 term.write("> ");
             };
 
