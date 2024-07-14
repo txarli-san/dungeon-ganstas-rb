@@ -8,6 +8,7 @@ global_commands:
   look: "You look around."
   inventory: "You check your inventory."
   help: "Available commands: look, inventory, help, [contextual commands]"
+  stats: "Show your stats"
 
 rooms:
   start:
