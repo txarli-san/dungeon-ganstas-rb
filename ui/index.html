@@ -3,21 +3,131 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Text Adventure Game</title>
+        <title>Dungeon Gangstas</title>
         <link rel="stylesheet" href="https://unpkg.com/xterm/css/xterm.css" />
         <script src="https://unpkg.com/xterm/lib/xterm.js"></script>
         <script src="https://unpkg.com/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
         <style>
+            @font-face {
+                font-family: "VT323";
+                src: url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+            }
             html,
             body {
                 height: 100%;
                 margin: 0;
                 padding: 0;
-                background-color: #000;
+                background-color: #1a0b00;
+                overflow: hidden;
             }
             #terminal {
                 height: 100%;
                 width: 100%;
+                position: relative;
+                margin: 20px;
+            }
+            #terminal::before {
+                content: " ";
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                background: linear-gradient(
+                        rgba(18, 16, 16, 0) 50%,
+                        rgba(0, 0, 0, 0.25) 50%
+                    ),
+                    linear-gradient(
+                        90deg,
+                        rgba(255, 0, 0, 0.06),
+                        rgba(0, 255, 0, 0.02),
+                        rgba(0, 0, 255, 0.06)
+                    );
+                z-index: 2;
+                background-size:
+                    100% 2px,
+                    3px 100%;
+                pointer-events: none;
+            }
+            #terminal::after {
+                content: " ";
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                background: rgba(18, 16, 16, 0.1);
+                opacity: 0;
+                z-index: 2;
+                pointer-events: none;
+                animation: flicker 0.15s infinite;
+            }
+            @keyframes flicker {
+                0% {
+                    opacity: 0.27861;
+                }
+                5% {
+                    opacity: 0.34769;
+                }
+                10% {
+                    opacity: 0.23604;
+                }
+                15% {
+                    opacity: 0.90626;
+                }
+                20% {
+                    opacity: 0.18128;
+                }
+                25% {
+                    opacity: 0.83891;
+                }
+                30% {
+                    opacity: 0.65583;
+                }
+                35% {
+                    opacity: 0.67807;
+                }
+                40% {
+                    opacity: 0.26559;
+                }
+                45% {
+                    opacity: 0.84693;
+                }
+                50% {
+                    opacity: 0.96019;
+                }
+                55% {
+                    opacity: 0.08594;
+                }
+                60% {
+                    opacity: 0.20313;
+                }
+                65% {
+                    opacity: 0.71988;
+                }
+                70% {
+                    opacity: 0.53455;
+                }
+                75% {
+                    opacity: 0.37288;
+                }
+                80% {
+                    opacity: 0.71428;
+                }
+                85% {
+                    opacity: 0.70419;
+                }
+                90% {
+                    opacity: 0.7003;
+                }
+                95% {
+                    opacity: 0.36108;
+                }
+                100% {
+                    opacity: 0.24387;
+                }
             }
         </style>
     </head>
@@ -26,12 +136,15 @@
         <script>
             const term = new Terminal({
                 cursorBlink: true,
-                fontSize: 14,
-                fontFamily: 'Consolas, "Courier New", monospace',
+                fontSize: 24,
+                fontFamily: '"VT323", monospace',
                 theme: {
-                    background: "#000",
-                    foreground: "#fff",
+                    background: "#1a0b00",
+                    foreground: "#ffb000",
+                    cursor: "#ffb000",
                 },
+                cursorStyle: "block",
+                padding: 10,
             });
             const fitAddon = new FitAddon.FitAddon();
             term.loadAddon(fitAddon);
@@ -42,7 +155,8 @@
             let inputBuffer = "";
 
             socket.onmessage = (event) => {
-                term.writeln(event.data);
+                const lines = event.data.split("\r\n");
+                lines.forEach((line) => term.writeln(line));
                 term.write("> ");
             };
 
@@ -73,8 +187,9 @@
 
             socket.onopen = () => {
                 term.writeln(
-                    "Connected to the game server. Welcome to the Text Adventure!",
+                    "Connected to the game server. Welcome to Dungeon Degenerates\n",
                 );
+                i;
                 term.write("> ");
             };
 
