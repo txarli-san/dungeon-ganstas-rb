@@ -152,7 +152,10 @@
             term.open(document.getElementById("terminal"));
             fitAddon.fit();
 
-            const socket = new WebSocket("ws://localhost:8080");
+            const socket = new WebSocket(
+                "ws://" + window.location.hostname + "/socket",
+            );
+
             let inputBuffer = "";
 
             const banner = `
