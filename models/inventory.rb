@@ -10,6 +10,6 @@ class Inventory
   end
 
   def remove(item)
-    @items.delete(item)
+    @items.delete_if { |i| i.name == item.name }
   end
 end

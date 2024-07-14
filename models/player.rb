@@ -15,23 +15,23 @@ class Player
     equipped_weapon = @equipment.weapon
     weapon_damage = equipped_weapon ? equipped_weapon.damage : 0
 
-    stats = {
-      "Health": "#{@stats['health']}/#{@stats['max_health']}",
-      "Strength": @stats['strength'],
-      "Defense": calculate_defense,
-      "Weapon": equipped_weapon ? "#{equipped_weapon.name} (Damage: #{weapon_damage})" : 'None',
-      "Total Damage": calculate_damage
-    }
-
-    stats.map { |key, value| "#{key.to_s.ljust(15)}: #{value}" }.join("\n")
+    [
+      "Health: #{@stats['health']}/#{@stats['max_health']}",
+      "Strength: #{@stats['strength']}",
+      "Defense: #{calculate_defense}",
+      "Weapon: #{equipped_weapon ? "#{equipped_weapon.name} (Damage: #{weapon_damage})" : 'None'}",
+      "Total Damage: #{calculate_damage}"
+    ].join("\n")
   end
 
   def equip(item)
     return unless @equipment.can_equip?(item)
 
     @inventory.remove(item)
-    @equipment.equip(item)
+    old_item = @equipment.equip(item)
+    @inventory.add(old_item) if old_item
     update_stats
+    "You equip the #{item.name}."
   end
 
   def unequip(slot)

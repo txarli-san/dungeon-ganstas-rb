@@ -12,7 +12,9 @@ class Equipment
   end
 
   def equip(item)
-    @slots[item.slot] = item if can_equip?(item)
+    old_item = @slots[item.slot]
+    @slots[item.slot] = item
+    old_item
   end
 
   def unequip(slot)

@@ -4,6 +4,7 @@ require_relative '../models/player'
 RSpec.describe Player do
   let(:initial_stats) { { 'health' => 12, 'max_health' => 12, 'strength' => 2, 'defense' => 1 } }
   let(:player) { Player.new(initial_stats) }
+  let(:item) { Item.new({ 'name' => 'Sword', 'type' => 'weapon', 'slot' => 'weapon', 'damage' => 5 }) }
 
   describe '#initialize' do
     it 'sets up the player with initial stats' do
@@ -14,8 +15,6 @@ RSpec.describe Player do
   end
 
   describe '#equip' do
-    let(:item) { Item.new({ 'name' => 'Sword', 'type' => 'weapon', 'slot' => 'weapon', 'damage' => 5 }) }
-
     it 'equips an item' do
       player.inventory.add(item)
       player.equip(item)

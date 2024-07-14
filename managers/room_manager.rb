@@ -9,7 +9,7 @@ class RoomManager
     items_description = list_items(room['items'])
     description += "\nItems here: #{items_description}" if items_description != 'None'
     description += "\nMonsters here: " + room['monsters'].keys.join(', ') if room['monsters'] && room['monsters'].any?
-    description += "\nAvailable commands: " + available_commands(room).join(', ')
+    description += "\nAvailable commands: #{available_commands(room).join(', ')}"
     description
   end
 
@@ -26,9 +26,11 @@ class RoomManager
   end
 
   def available_commands(room)
-    global_commands = %w[inventory look]
-    room_commands = room['commands']&.keys || []
-    custom_commands = %w[take drop attack talk use]
-    (global_commands + room_commands + custom_commands).uniq
+    commands = %w[look inventory stats]
+    commands += ['take'] if room['items']&.any?
+    commands += ['attack'] if room['monsters']&.any?
+    commands += room['transitions'].keys if room['transitions']
+    commands += room['commands'].keys if room['commands']
+    commands.uniq
   end
 end

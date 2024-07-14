@@ -8,6 +8,15 @@ RSpec.describe CommandHandler do
   let(:combat_system) { instance_double('CombatSystem') }
   let(:command_handler) { CommandHandler.new(game_state, room_manager, item_manager, combat_system) }
 
+  before do
+    allow(game_state).to receive(:get_room_data).and_return({
+                                                              'items' => { 'sword' => {} },
+                                                              'monsters' => { 'goblin' => {} },
+                                                              'transitions' => { 'go north' => 'next_room' },
+                                                              'commands' => {}
+                                                            })
+  end
+
   describe '#handle' do
     context 'when given a movement command' do
       it 'calls handle_movement' do
@@ -47,7 +56,7 @@ RSpec.describe CommandHandler do
 
     context 'when given an invalid command' do
       it 'returns an error message' do
-        expect(command_handler.handle('invalid command')).to eq("I don't understand that command.")
+        expect(command_handler.handle('invalid command')).to eq("I don't understand that command. Available commands: look, inventory, stats, use, take, attack, go north")
       end
     end
   end
