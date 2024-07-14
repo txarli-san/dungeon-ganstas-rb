@@ -99,3 +99,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 lol
+
+## Kudos to:
+
+https://patorjk.com/
