@@ -96,7 +96,7 @@ strength elixir:
   name: "Elixir of Strength"
   type: consumable
   effect:
-    strength: 5
+    attack: 5
 
 invisibility potion:
   name: "Potion of Invisibility"

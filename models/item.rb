@@ -1,5 +1,5 @@
 class Item
-  attr_reader :name, :type, :slot, :damage, :defense, :strength_bonus, :effect
+  attr_reader :name, :type, :slot, :damage, :defense, :attack_bonus, :effect
 
   def initialize(data)
     @name = data['name']
@@ -7,7 +7,7 @@ class Item
     @slot = data['slot']&.to_sym
     @damage = data['damage'] || 0
     @defense = data['defense'] || 0
-    @strength_bonus = data['strength_bonus'] || 0
+    @strength_bonus = data['attack_bonus'] || 0
     @effect = data['effect'] || {}
   end
 
@@ -18,7 +18,7 @@ class Item
       'slot' => @slot,
       'damage' => @damage,
       'defense' => @defense,
-      'strength_bonus' => @strength_bonus,
+      'attack_bonus' => @attack_bonus,
       'effect' => @effect
     }
   end

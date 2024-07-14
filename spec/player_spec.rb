@@ -2,7 +2,7 @@ require 'spec_helper'
 require_relative '../models/player'
 
 RSpec.describe Player do
-  let(:initial_stats) { { 'health' => 12, 'max_health' => 12, 'strength' => 2, 'defense' => 1 } }
+  let(:initial_stats) { { 'health' => 12, 'max_health' => 12, 'attack' => 2, 'defense' => 1 } }
   let(:player) { Player.new(initial_stats) }
   let(:item) { Item.new({ 'name' => 'Sword', 'type' => 'weapon', 'slot' => 'weapon', 'damage' => 5 }) }
 
@@ -20,7 +20,7 @@ RSpec.describe Player do
       player.equip(item)
       expect(player.equipment.slots[:weapon]).to eq(item)
       expect(player.inventory.items).not_to include(item)
-      expect(player.stats['strength']).to eq(7) # 2 (base) + 5 (weapon damage)
+      expect(player.stats['attack']).to eq(7) # 2 (base) + 5 (weapon damage)
     end
   end
 
@@ -39,7 +39,7 @@ RSpec.describe Player do
     it 'calculates total damage' do
       player.inventory.add(Item.new({ 'name' => 'Sword', 'type' => 'weapon', 'slot' => 'weapon', 'damage' => 5 }))
       player.equip(player.inventory.items.first)
-      expect(player.calculate_damage).to eq(7)  # 2 (base strength) + 5 (weapon damage)
+      expect(player.calculate_damage).to eq(7)  # 2 (base attack) + 5 (weapon damage)
     end
   end
 
@@ -69,7 +69,7 @@ RSpec.describe Player do
       sword = Item.new({ 'name' => 'Sword', 'type' => 'weapon', 'slot' => 'weapon', 'damage' => 5 })
       player.inventory.add(sword)
       player.equip(sword)
-      expected_output = "Health: 12/12\nStrength: 7\nDefense: 1\nWeapon: Sword (Damage: 5)\nTotal Damage: 7"
+      expected_output = "Health: 12/12\nAttack: 7\nDefense: 1\nWeapon: Sword (Damage: 5)\nTotal Damage: 7"
       expect(player.display_stats).to eq(expected_output)
     end
   end

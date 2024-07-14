@@ -1,7 +1,7 @@
 RSpec.describe GameState do
   let(:test_data) do
     {
-      'player' => { 'health' => 100, 'max_health' => 100, 'strength' => 10, 'defense' => 5 },
+      'player' => { 'health' => 100, 'max_health' => 100, 'attack' => 10, 'defense' => 5 },
       'rooms' => {
         'start' => {
           'description' => 'Test room',

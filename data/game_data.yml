@@ -1,7 +1,7 @@
 player:
   health: 12
   max_health: 12
-  strength: 2
+  attack: 2
   defense: 1
 
 global_commands:

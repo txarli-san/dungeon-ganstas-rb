@@ -6,7 +6,7 @@ class Player
 
   def initialize(initial_stats)
     @stats = initial_stats
-    @base_strength = initial_stats['strength']
+    @base_attack = initial_stats['attack']
     @inventory = Inventory.new
     @equipment = Equipment.new
   end
@@ -17,7 +17,7 @@ class Player
 
     [
       "Health: #{@stats['health']}/#{@stats['max_health']}",
-      "Strength: #{@stats['strength']}",
+      "Attack: #{@stats['attack']}",
       "Defense: #{calculate_defense}",
       "Weapon: #{equipped_weapon ? "#{equipped_weapon.name} (Damage: #{weapon_damage})" : 'None'}",
       "Total Damage: #{calculate_damage}"
@@ -43,7 +43,7 @@ class Player
   end
 
   def calculate_damage
-    @base_strength + (@equipment.weapon ? @equipment.weapon.damage : 0)
+    @base_attack + (@equipment.weapon ? @equipment.weapon.damage : 0)
   end
 
   def calculate_defense
@@ -58,6 +58,6 @@ class Player
   private
 
   def update_stats
-    @stats['strength'] = @base_strength + @equipment.total_strength
+    @stats['attack'] = @base_attack + @equipment.total_attack
   end
 end

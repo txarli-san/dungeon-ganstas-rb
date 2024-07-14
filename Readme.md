@@ -7,7 +7,7 @@ This project is a flexible text adventure game engine written in Ruby. It allows
 - Dynamic room navigation
 - Item management (picking up, dropping, and using items)
 - Combat system with monsters
-- Character stats (health, strength, defense)
+- Character stats (health, attack, defense)
 - Customizable game data using YAML files
 - Extensible command system
 - Inventory management

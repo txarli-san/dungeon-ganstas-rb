@@ -31,7 +31,7 @@ class Equipment
     %i[head chest offhand].sum { |slot| @slots[slot]&.defense || 0 }
   end
 
-  def total_strength
+  def total_attack
     weapon ? weapon.damage : 0
   end
 end
