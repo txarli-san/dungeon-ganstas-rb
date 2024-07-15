@@ -15,13 +15,18 @@ class Player
   def display_stats
     equipped_weapon = @equipment.weapon
     weapon_damage = equipped_weapon ? equipped_weapon.damage : 0
+    equipped_shield = @equipment.shield
+    shield_defense = equipped_shield ? equipped_shield.defense : 0
+    equipped_chest = @equipment.chest
+    chest_defense = equipped_chest ? equipped_chest.defense : 0
 
     [
       "Health: #{@stats['health']}/#{@stats['max_health']}",
-      "Attack: #{@stats['attack']}",
+      "Attack: #{calculate_damage}",
       "Defense: #{calculate_defense}",
       "Weapon: #{equipped_weapon ? "#{equipped_weapon.name} (Damage: #{weapon_damage})" : 'None'}",
-      "Total Damage: #{calculate_damage}"
+      "Shield: #{equipped_shield ? "#{equipped_shield.name} (Defense: #{shield_defense})" : 'None'}",
+      "Armor: #{equipped_chest ? "#{equipped_chest.name} (Defense: #{chest_defense})" : 'None'}"
     ].join("\n")
   end
 

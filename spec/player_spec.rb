@@ -45,7 +45,7 @@ RSpec.describe Player do
 
   describe '#calculate_defense' do
     it 'calculates total defense' do
-      shield = Item.new({ 'name' => 'Shield', 'type' => 'armor', 'slot' => 'offhand', 'defense' => 3 })
+      shield = Item.new({ 'name' => 'Shield', 'type' => 'armor', 'slot' => 'shield', 'defense' => 3 })
       player.inventory.add(shield)
       player.equip(shield)
       expect(player.calculate_defense).to eq(4) # 1 (base defense) + 3 (shield defense)
@@ -69,7 +69,7 @@ RSpec.describe Player do
       sword = Item.new({ 'name' => 'Sword', 'type' => 'weapon', 'slot' => 'weapon', 'damage' => 5 })
       player.inventory.add(sword)
       player.equip(sword)
-      expected_output = "Health: 12/12\nAttack: 7\nDefense: 1\nWeapon: Sword (Damage: 5)\nTotal Damage: 7"
+      expected_output = "Health: 12/12\nAttack: 7\nDefense: 1\nWeapon: Sword (Damage: 5)\nShield: None\nArmor: None"
       expect(player.display_stats).to eq(expected_output)
     end
   end
