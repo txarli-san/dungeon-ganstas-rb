@@ -1,7 +1,7 @@
 class Equipment
   attr_reader :slots
 
-  SLOT_TYPES = %i[weapon head chest offhand]
+  SLOT_TYPES = %i[weapon head chest shield]
 
   def initialize
     @slots = Hash.new(nil)
@@ -27,8 +27,16 @@ class Equipment
     @slots[:weapon]
   end
 
+  def shield
+    @slots[:shield]
+  end
+
+  def chest
+    @slots[:chest]
+  end
+
   def total_defense
-    %i[head chest offhand].sum { |slot| @slots[slot]&.defense || 0 }
+    %i[head chest shield].sum { |slot| @slots[slot]&.defense || 0 }
   end
 
   def total_attack

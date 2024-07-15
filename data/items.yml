@@ -64,7 +64,7 @@ tower shield:
   name: "Tower Shield"
   type: armor
   defense: 3
-  slot: offhand
+  slot: shield
 
 # Magic Items
 staff of fireballs:
