@@ -17,26 +17,26 @@ longbow:
   damage: 7
   slot: weapon
 
-dagger:
+assassin's dagger:
   name: "Assassin's Dagger"
   type: weapon
   damage: 4
   slot: weapon
 
-warhammer:
+dwarven warhammer:
   name: "Dwarven Warhammer"
   type: weapon
   damage: 9
   slot: weapon
 
-spear:
+elven spear:
   name: "Elven Spear"
   type: weapon
   damage: 6
   slot: weapon
 
 # Armor
-chainmail:
+chainmail armor:
   name: "Chainmail Armor"
   type: armor
   defense: 4
@@ -54,7 +54,7 @@ leather armor:
   defense: 3
   slot: chest
 
-mage robe:
+enchanted mage robe:
   name: "Enchanted Mage Robe"
   type: armor
   defense: 2
@@ -67,13 +67,13 @@ tower shield:
   slot: offhand
 
 # Magic Items
-staff:
+staff of fireballs:
   name: "Staff of Fireballs"
   type: magic
   damage: 12
   slot: weapon
 
-wand:
+wand of frost:
   name: "Wand of Frost"
   type: magic
   damage: 10
@@ -92,13 +92,13 @@ mana potion:
   effect:
     mana: 5
 
-strength elixir:
+elixir of strength:
   name: "Elixir of Strength"
   type: consumable
   effect:
     attack: 5
 
-invisibility potion:
+potion of invisibility:
   name: "Potion of Invisibility"
   type: consumable
   effect:

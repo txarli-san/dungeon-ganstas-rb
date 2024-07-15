@@ -1,10 +1,10 @@
 player:
   health: 12
-  max_health: 12
+  max health: 12
   attack: 2
   defense: 1
 
-global_commands:
+global commands:
   look: "You look around."
   inventory: "You check your inventory."
   help: "Available commands: look, inventory, help, [contextual commands]"
@@ -14,7 +14,7 @@ rooms:
   start:
     description: "You are in a dark room. There is a door to the north."
     items:
-      iron_sword:
+      iron sword:
         name: "Iron Sword"
         type: weapon
         slot: weapon
@@ -57,11 +57,11 @@ rooms:
       talk to ghost: "The ghost whispers, 'Beware the dragon in the treasure room.'"
     transitions:
       "go south": "hallway"
-      "go west": "hidden_passage"
+      "go west": "hidden passage"
 
-  hidden_passage:
+  hidden passage:
     description: "You found a hidden passage behind a bookshelf. It leads to an unknown location."
-    health_potion:
+    health potion:
       name: "Health Potion"
       type: consumable
       effect:
@@ -69,18 +69,18 @@ rooms:
     commands:
       look: "You are in a narrow passage. It's dark and eerie."
     transitions:
-      "go north": "treasure_room"
+      "go north": "treasure room"
       "go south": "library"
 
   armory:
     description: "You are in an armory filled with various weapons and armor. A skeleton warrior is here."
     items:
-      battle_axe:
+      battle axe:
         name: "Battle Axe"
         type: weapon
         damage: 8
         slot: weapon
-      leather_armor:
+      leather armor:
         name: "Leather Armor"
         type: armor
         defense: 2
@@ -91,7 +91,7 @@ rooms:
         defense: 3
         slot: offhand
     monsters:
-      skeleton_warrior:
+      skeleton warrior:
         health: 14
         attack: 9
     commands:
@@ -102,10 +102,10 @@ rooms:
     transitions:
       "go west": "hallway"
 
-  treasure_room:
+  treasure room:
     description: "You found the treasure room! Congratulations! A dragon is sleeping here."
     items:
-      fireball_staff:
+      staff of fireballs:
         name: "Staff of Fireballs"
         type: magic
         damage: 12
@@ -120,5 +120,5 @@ rooms:
       attack dragon: "You attack the dragon, risking everything!"
       sneak: "You try to sneak past the dragon without waking it."
     transitions:
-      "go south": "hidden_passage"
+      "go south": "hidden passage"
       "go west": "hallway"
