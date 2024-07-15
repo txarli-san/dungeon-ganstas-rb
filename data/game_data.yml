@@ -19,20 +19,15 @@ rooms:
         type: weapon
         slot: weapon
         damage: 6
-    commands:
-      take iron sword: "You take the sword."
     transitions:
       "go north": "hallway"
 
   hallway:
-    description: "You are in a long hallway. There are doors to the north and south. A goblin stands guard here."
+    description: "You are in a long hallway. There are doors to the north and south."
     monsters:
       goblin:
         health: 9
         attack: 5
-    commands:
-      attack goblin: "You attack the goblin!"
-      talk to goblin: "The goblin looks suspiciously at you but says nothing."
     transitions:
       "go north": "library"
       "go south": "start"
@@ -89,16 +84,11 @@ rooms:
         name: "Shield"
         type: armor
         defense: 3
-        slot: offhand
+        slot: shield
     monsters:
       skeleton warrior:
         health: 14
         attack: 9
-    commands:
-      look: "You see weapons and armor everywhere. A skeleton warrior is here."
-      take sword: "You take a sharp sword."
-      take shield: "You take a sturdy shield."
-      attack skeleton: "You attack the skeleton warrior!"
     transitions:
       "go west": "hallway"
 
@@ -114,11 +104,6 @@ rooms:
       dragon:
         health: 100
         attack: 20
-    commands:
-      look: "You see a huge pile of treasure and a sleeping dragon."
-      take treasure: "You take some treasure, but the dragon awakens!"
-      attack dragon: "You attack the dragon, risking everything!"
-      sneak: "You try to sneak past the dragon without waking it."
     transitions:
       "go south": "hidden passage"
       "go west": "hallway"
