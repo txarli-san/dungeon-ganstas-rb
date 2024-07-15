@@ -19,7 +19,7 @@ class CommandHandler
   end
 
   def get_available_commands(room_data)
-    commands = %w[look inventory stats use]
+    commands = %w[look inventory stats use equip]
     commands += ['take'] if room_data['items']&.any?
     commands += ['attack'] if room_data['monsters']&.any?
     commands += room_data['transitions'].keys if room_data['transitions']
@@ -34,8 +34,8 @@ class CommandHandler
     when 'go'      then handle_movement(args.first)
     when 'take'    then @item_manager.take_item(args.join(' '), @game_state)
     when 'drop'    then @item_manager.drop_item(args.join(' '), @game_state)
-    when 'use'     then @item_manager.use_item(args.join(' '), @game_state)
-    when 'attack'  then @combat_system.attack(args.first, @game_state.current_room)
+    when 'use', 'equip' then @item_manager.use_item(args.join(' '), @game_state)
+    when 'attack' then @combat_system.attack(args.first, @game_state.current_room)
     when 'inventory' then show_inventory
     when 'look'    then look
     when 'stats'   then @game_state.player.display_stats
