@@ -7,6 +7,7 @@ class Player
   def initialize(initial_stats)
     @stats = initial_stats
     @base_attack = initial_stats['attack']
+    @base_defense = initial_stats['defense']
     @inventory = Inventory.new
     @equipment = Equipment.new
   end
@@ -47,7 +48,7 @@ class Player
   end
 
   def calculate_defense
-    @stats['defense'].to_i + @equipment.total_defense
+    @base_defense + (@equipment.total_defense || 0)
   end
 
   def take_damage(amount)
@@ -59,5 +60,6 @@ class Player
 
   def update_stats
     @stats['attack'] = @base_attack + @equipment.total_attack
+    @stats['defense'] = @base_defense + @equipment.total_defense
   end
 end
