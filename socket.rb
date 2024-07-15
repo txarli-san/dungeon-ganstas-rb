@@ -1,6 +1,6 @@
 require 'em-websocket'
-require 'eventmachine'
 require_relative 'core/engine'
+require_relative 'core/game_view'
 
 EM.run do
   @adventures = {}
@@ -9,7 +9,8 @@ EM.run do
     ws.onopen do |_handshake|
       puts 'WebSocket connection open'
       @adventures[ws] = Engine.new('./data/game_data.yml')
-      ws.send(@adventures[ws].start)
+      initial_response = @adventures[ws].start
+      ws.send(GameView.format_response(@adventures[ws], initial_response))
     end
 
     ws.onclose { puts 'Connection closed' }
@@ -22,7 +23,7 @@ EM.run do
                  else
                    @adventures[ws].handle_input(msg)
                  end
-      ws.send(response)
+      ws.send(GameView.format_response(@adventures[ws], response))
     end
   end
 end
