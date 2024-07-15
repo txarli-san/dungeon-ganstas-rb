@@ -1,6 +1,6 @@
 player:
   health: 12
-  max health: 12
+  max_health: 12
   attack: 2
   defense: 1
 
