@@ -1,5 +1,3 @@
-require 'byebug'
-
 class GameView
   FIXED_WIDTH = 80
   FIXED_HEIGHT = 24
