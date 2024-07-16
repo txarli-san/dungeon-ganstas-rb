@@ -1,8 +1,8 @@
 require 'dotenv/load'
+require 'open3'
 require 'rake'
 require_relative 'core/engine'
 require_relative 'core/game_view'
-require 'open3'
 
 namespace :deploy do
   desc 'Deploy to production'
