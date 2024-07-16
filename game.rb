@@ -1,5 +1,6 @@
 require 'optparse'
 require_relative 'core/engine'
+require_relative 'core/game_view'
 
 options = {}
 OptionParser.new do |opts|
@@ -12,7 +13,7 @@ end.parse!
 
 adventure = Engine.new('./data/game_data.yml')
 
-puts adventure.start
+puts GameView.format_response(adventure, adventure.start)
 
 loop do
   print '> '
@@ -25,7 +26,7 @@ loop do
   else
     begin
       response = adventure.handle_input(input)
-      puts response
+      puts GameView.format_response(adventure, response)
     rescue StandardError => e
       puts "An error occurred: #{e.message}"
       puts 'Please try a different command.'
