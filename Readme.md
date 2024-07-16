@@ -1,4 +1,6 @@
-# Dungeon Ganstas - Old school text adventure
+# Dungeon Gangstas - Old school text adventure
+
+**DISCLAIMER: This is a recreational project and a work in progress. It is not intended for production use. Expect bugs, incomplete features, and frequent changes. Proceed with no expectations and at your own risk.**
 
 This project is a flexible text adventure game engine written in Ruby. It allows you to create interactive, text-based adventure games with rooms, items, monsters, and various commands.
 
@@ -13,6 +15,9 @@ This project is a flexible text adventure game engine written in Ruby. It allows
 - Inventory management
 - Randomized item placement and monster loot
 - Simple natural language processing for game commands
+- Equipment system (weapons, armor, shields)
+- Special items and artifacts
+- Console and web-based interfaces
 
 ## Getting Started
 
@@ -42,10 +47,19 @@ bundle install
 
 ### Running the Game
 
-To start the game, run:
+To start the game in console mode, run:
 
 ```
 ruby game.rb
+```
+Or with --debug if you want the minimal version with no TUI:
+```
+ruby game.rb --debug
+```
+
+To start the websocket server for web ui:
+```
+ruby socket.rb
 ```
 
 Follow the on-screen prompts to navigate through the adventure.
@@ -62,6 +76,7 @@ You can customize the game by editing the `game_data.yml` file in the `data` dir
   - `console_output.rb`: Handles console output
   - `engine.rb`: The main game engine
   - `game_state.rb`: Manages the current game state
+  - `game_view.rb`: Handles game view formatting
   - `world.rb`: Generates the game world
 - `data/`: Game data files
   - `game_data.yml`: Main game data
@@ -81,7 +96,10 @@ You can customize the game by editing the `game_data.yml` file in the `data` dir
   - `spec_helper.rb`: RSpec configuration
 - `utils/`: Utility classes
   - `output_formatter.rb`: Formats output for display
-- `game.rb`: Main game loop
+- `game.rb`: Main game loop for console interface
+- `socket.rb`: Websocket server for multiplayer functionality
+- `server.rb`: TCP server for telnet-like functionality
+- `index.html`: Web interface for the game
 - `Gemfile` and `Gemfile.lock`: Ruby dependencies
 
 ## Running Tests
