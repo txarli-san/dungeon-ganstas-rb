@@ -13,7 +13,8 @@ end.parse!
 
 adventure = Engine.new('./data/game_data.yml')
 
-puts GameView.format_response(adventure, adventure.start)
+start = options[:debug] ? adventure.start : GameView.format_response(adventure, adventure.start)
+puts start
 
 loop do
   print '> '
