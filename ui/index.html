@@ -183,6 +183,7 @@
                 term.writeln(
                     "          Press Enter to start, or Q to quit in shame...",
                 );
+                focusTerminal();
             };
 
             socket.onclose = () => {
@@ -204,6 +205,10 @@
                 document.getElementById("terminal").style.display = "none";
             } else {
                 connectWebSocket();
+            }
+
+            function focusTerminal() {
+                term.focus();
             }
         </script>
     </body>
