@@ -8,7 +8,7 @@ class Equipment
   end
 
   def can_equip?(item)
-    SLOT_TYPES.include?(item.slot) && @slots[item.slot].nil?
+    SLOT_TYPES.include?(item.slot) # && @slots[item.slot].nil?
   end
 
   def equip(item)

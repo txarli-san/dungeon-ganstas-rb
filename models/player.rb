@@ -1,5 +1,6 @@
 require_relative 'inventory'
 require_relative 'equipment'
+require 'byebug'
 
 class Player
   attr_reader :stats, :inventory, :equipment
@@ -31,11 +32,13 @@ class Player
   end
 
   def equip(item)
-    return unless @equipment.can_equip?(item)
+    # byebug
+    return "Error equiping #{item}" unless @equipment.can_equip?(item)
 
     @inventory.remove(item)
     old_item = @equipment.equip(item)
     @inventory.add(old_item) if old_item
+    # byebug
     update_stats
     "You equip the #{item.name}."
   end

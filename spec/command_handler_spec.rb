@@ -56,7 +56,7 @@ RSpec.describe CommandHandler do
 
     context 'when given an invalid command' do
       it 'returns an error message' do
-        expect(command_handler.handle('invalid command')).to eq("I don't understand that command. Available commands: look, inventory, stats, use, take, attack, go north")
+        expect(command_handler.handle('invalid command')).to eq("I don't understand that command. Available commands: look, inventory, stats, use, equip, take, attack, go north")
       end
     end
   end
